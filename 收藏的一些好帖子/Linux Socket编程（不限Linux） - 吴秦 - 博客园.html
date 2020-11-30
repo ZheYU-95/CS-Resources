@@ -1,0 +1,2143 @@
+<!DOCTYPE html> <html ml-update=aware style lang=zh-cn><!--
+ Page saved with SingleFile 
+ url: https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html 
+ saved date: Thu Nov 26 2020 21:09:08 GMT+0100 (中欧标准时间)
+--><meta charset=utf-8>
+<meta name=viewport content="width=device-width, initial-scale=1.0">
+<meta name=referrer content=origin>
+<meta name=description content=&amp;amp;ldquo;一切皆Socket！&amp;amp;rdquo;话虽些许夸张，但是事实也是，现在的网络编程几乎都是用的socket。&amp;amp;mdash;&amp;amp;mdash;有感于实际编程和开源项目>
+<meta property=og:description content=&amp;amp;ldquo;一切皆Socket！&amp;amp;rdquo;话虽些许夸张，但是事实也是，现在的网络编程几乎都是用的socket。&amp;amp;mdash;&amp;amp;mdash;有感于实际编程和开源项目>
+<meta http-equiv=Cache-Control content=no-transform>
+<meta http-equiv=Cache-Control content=no-siteapp>
+<meta http-equiv=X-UA-Compatible content="IE=edge">
+<title>Linux Socket编程（不限Linux） - 吴秦 - 博客园</title>
+<style>:root{--sf-img-10:url("data:image/gif;base64,R0lGODlhEADIAPcAAAAAANmMNNuQPNuWPNucPNukO9usO9y0Pt2ZR9yuQOC8WOaydvDLJvHOL/LROuDBWPPTRvTVTPTXVvXZXePEYuTJb+zLa+fPfenBc+7PdO/QevHPafHQbPXbZPbcavHScvLUfPbedfbgfOm5he7OiOzFme3Knu3OnejQhO/SgO/The/UlO3Sne3Wne3ZnvPWhPPYjvPalvXdkvXelPXen+7Lo+3XoO7ZoPDfq/TdqPLYu/fihPfji/jkjvflkvjlkfjmlvjnnPnonfbhrPnpofnppfnrqvrsrfHisfHkt/XltfLluvPnvvTgufbnuffnvPfov/jntfrts/jouPjpvvrvufrvvfTcwvbmw/PowffpyfjqwvntyPruz/bk0fru0/vwwfvxxvvyyfvyzPzyyPzzzfrw1fzz0Pz00fz11vry3fz22f333Pv14/v36f345f366/z47f347/777/368/379P788v799P389v79+P79+v7++f/++/7+/P///gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAQAMgAAAj/AP8JHEiwoMGDCBMqXMhwIA4kECHiwJOnYsU+Al308cPRT50kIJMwyaJG4A09Ybh0MZNnj0U8fXAItJGHC5ctSpRsgfLEiZM6LgS2oKMFS5M2Fivi8dNCIAs/fPjoyQNHDJgqUo7AYeFUzxs2acqEsZK1CJE3XP+dyLMGjVWsRooIAfLmhEATeNxelRI3CBAfb0wIrCHnSxebW6hQmRIlShvB/7zoMFGisuXLVxpq3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnk27tu3buHPr3s27t+/fwIMLH068uPHjyJMrX868ufPn0KNLnw79AYXr1x/EocOdTh2M/w5spvSz0U2F8xUuoFgi8ACeHjJoDJlzx46dOXP0KBCYgM4MGS9YYIEKKWiQQQZuHCCQAW6sQAIGWthnH35+GLCgH3nggYcdawCxQwgeTJBGAQIVgAcZVRwhBA8ihBgBBGeQ+A8BdEhRhIchdCABBA40MAYBAg0wBxE/fKgjjw0wIMYAAiGgRg40xADDCyCA8AEHG2zB5D81LCBAAGCGGaYAI1Bn5pkGBQQAOw==");--sf-img-11:url("data:image/gif;base64,R0lGODlhEADIAPcAAAAAAIqPl5mepKqusri8wMTHy8fKzczO0dTW2Nvd3+Pk5uTm5+jp6urr7PHy8/Lz9PP09PT19fj5+fz8/P39/f///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAQAMgAAAj/AP8JHEiwoMGDCBMqXMiQYIUICiJKjBihAkGIFTJqrEAhgQOCCjZqpMARAUiRCUiSNDkw5EYEB0hKYCnQZYIDOHGuPKmywoECEirMBNmTAlCOEGj+C1m0wgQJSS8mcCpUKISkHwdWcICgq9euDiw2HEu2rNmzaNOqXcu2rdu3cOPKnUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sxZc4UGBkKLDt1ArEDQIjNOILCAoIHUVCcMcC2SwASqswe+3jhAwO0HuQXuJiCgePHbwf+9vn1bQIAHFYC7Zu70uVMGyZfHFvoAO8EGBKpCE++OvbXWBQPSq0+/wHTn9/AJBgQAOw==");--sf-img-14:url("data:image/gif;base64,R0lGODlhEADIAPcAAAAAAFhYWFlZWVtbW1xcXGJiYmNjY2dnZ3Nzc3R0dHt7e4CAgIGBgYSEhIWFhYaGhoeHh4iIiI6Ojo+Pj5CQkJGRkZWVlZaWlpeXl5iYmJqampubm52dnZ6enqGhoaSkpKWlpaampqenp6qqqqurq66urrCwsLGxsbKysrOzs7a2tre3t7i4uLm5ub29vb6+vr+/v8DAwMLCwsPDw8TExMXFxcbGxsfHx8nJycrKyszMzM3Nzc7Ozs/Pz9DQ0NXV1dbW1tfX19jY2NnZ2dra2tvb293d3d/f3+Dg4OHh4eLi4uTk5OXl5ebm5ujo6Orq6uvr6+zs7O3t7e7u7vPz8/T09Pj4+Pn5+fr6+vv7+/z8/P39/f7+/gAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAQAMgAAAj/AP8JHEiwoMGDCBMqXMiwocOEWIbI2CFjipUZO2YQwTJQC44aVaYgoZEjipQkNXBoEViERRQXG0bYWEFig4sgLIoIfAHDSRYMRpog+YEhixMYMATqQNGkhYULHDhcsNCiyQkdAqGQuAHkB44UKnD8CHKDBBSBXKCEKHHCRNAUJ0qEeMLlod27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXD63U8GCiwxIqtD3UsDIwy4gPUpjw+EBCCRMfIEZkEViDApIMBRSAmKDAQIYYFGwI1KChyBUCOYb0QnAx4EoR7gJNOBBSIcCAAwcICKgg5IEJgUcUiIjxYgQECSO8EIMIChwh0BZHIMDAAw3gMEQEDyyQwBFbwGbhhYYFBAA7");--sf-img-25:url("data:image/gif;base64,R0lGODlhCwAQAJEAAAAAAP///4CAgP///yH5BAEAAAMALAAAAAALABAAQAIhnI8mId2snBRxtoRV2ItrvkHZSJZd6A3n+jEhpaJvSRsFADs=")}.navbar a:hover{color:#666;text-decoration:underline}.navbar a:link,.navbar a:active,.navbar a:visited{color:#666;text-decoration:none}.navbar{display:flex;flex-direction:column;align-items:center;padding-top:5px;padding-bottom:5px}.navbar>nav{display:flex;font-size:15px;color:#666;flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:space-between;width:100%}.navbar>nav .navbar-branding{width:140px;flex-shrink:0;margin-right:5px}.navbar>nav .navbar-branding img{display:block;max-height:28px;height:28px;margin-left:10px}.navbar>nav .navbar-left>*:not(:first-child){margin-left:31px}.navbar>nav .navbar-right>*:not(:first-child),.navbar>nav #navbar_login_status>*:not(:first-child){margin-left:24px}.navbar>nav #navbar_login_status{min-width:120px}.navbar>nav .navbar-list{display:flex;flex-direction:row;align-items:center;flex-wrap:nowrap;list-style:none;white-space:nowrap;transition:width .5s ease}.navbar>nav .navbar-search{padding-left:20px;padding-right:20px;display:flex;flex-direction:row;align-items:center;border-radius:6px;height:32px}.navbar>nav .navbar-search img{width:19px;height:19px}.navbar>nav .navbar-search>input{border:none;outline:none;background:none;width:170px;font-size:inherit}.navbar>nav .navbar-search>button{background:none;border:none;cursor:pointer}.navbar>nav .navbar-search>input::-webkit-input-placeholder{color:#afafaf;opacity:1}.navbar>nav .navbar-search>input::-moz-placeholder{color:#afafaf;opacity:1}.navbar>nav .navbar-search>input::placeholder{color:#afafaf;opacity:1}.navbar>nav .navbar-icon-wrapper{position:relative}.dropdown{display:-ms-inline-flexbox;position:relative}body{font-family:'PingFang SC','Microsoft YaHei','Helvetica Neue','Helvetica','Arial',sans-serif}img{border:0}#blog_post_info_block{margin-top:20px}#EntryTag{margin-top:0!important}.cnblogs_code{background-color:#f5f5f5;font-family:Courier New!important;font-size:12px!important;border:1px solid #ccc;padding:5px;overflow:auto;margin:5px 0;color:#000}pre{overflow:scroll}.cnblogs_code span{font-family:Courier New!important;font-size:12px!important;line-height:1.5!important}.cnblogs_code_collapse{border-right:#808080 1px solid;border-top:#808080 1px solid;border-left:#808080 1px solid;border-bottom:#808080 1px solid;background-color:#fff;padding:2px}.code_img_closed{vertical-align:middle;padding-right:5px}.code_img_opened{vertical-align:middle;padding-right:5px}pre{margin-top:0;margin-bottom:0}#author_profile{float:left;width:280px;margin-top:0;margin-bottom:10px;color:#000;margin-left:0;font-size:12px}#author_profile a:hover{text-decoration:underline}.author_avatar{vertical-align:top;float:left;margin-right:5px;padding-top:5px;padding-left:2px;border:0}.author_profile_info{float:left;line-height:18px}#div_digg{float:right;margin-bottom:10px;margin-right:30px;font-size:12px;width:125px;text-align:center;margin-top:10px}.diggit{float:left;width:46px;height:52px;background:url(data:image/gif;base64,R0lGODlhLgA0AMQAAP/00P/22vfqt/b29v/11f/45P/56P/34PjtwfXlqf/55v/11//00v/44vnwyfn5+f/22Pbnrf/21vny0Pn00//33vDw8P/12KioqP/10ufm61B1uv/33f/33P////H4+iH5BAAAAAAALAAAAAAuADQAAAX/oJeMZGmeaJqKQOu+cCzPcxLJmZvlcM4DPlosE4kwMsfdLrlEIo8MZvRJjTKbxaZyy+16v94iYUwum8/odDlDjgjU8Lh8LBAs7mQ8YTHmS/aAfHyBeHeCg3l1dxAQFwsXkBeMjJILEJaNko2bk4+Pl4x3knUBpaanqKmqq6sCCAEdsR2ws6mytbSwprGns766HQgIHByxxR3FxMi3y8nIycTO0MqywtTH0Mu30s/PytLRt9bYxt3Hstzf4eDUsePlzc7bzebr8e3Bw+Tx2uj06t/unct3rVzAeeC8pQtXTR+8bAP/1Qs4beA7bRCZLVT4j6E7hxjNaezIkZ1FkOQO//pLGG0hvosp5a3k17LjSwQVcurcybOnz58/ETg4QLSo0aNIkypV6sBBg6dPC0CdWkBqg6pTs1q1qpWrgwlVw4odS7as2bMTJihYy7at27dw48adQMGA3bt48+rdy5cv3b6AAwu2S8EDhcOIEytezLhxYw+QI0ueTLmy5cuYM2veDPmD58+gQ4seTbq0htIPBqguzbq159OjH2jQgEHDANe4RcMWPUCDBwsYHuQe/pr0bA8PMNwmnnt36N6/lYve8Jk69enVdYdO3ds38OWgr4sPv6G8+fOfndPGwB5DdPAf0J8vjz2+ds8eMFigPEB/aOvjVTfffOl91t96+0X2HYB58REYHmu7JWfZgp7RZ9+FDw4I2m79teebgrVVeGGAD5ZYoGcSVjbBBvCJ52CDDb4Y4Xq1SQYcBSWSaN91Ioa222+0WSDkkBiwmGOPJmJ4ooHsbVDkkw4I6CJ62cV4H2gPFHDABVsWAB9zEIIppnFjlrnhbGimqeaabLbp5mwhAAA7) no-repeat;text-align:center;cursor:pointer;margin-top:2px;padding-top:5px}.diggnum{font-size:14px;color:#075db3;font-family:Verdana}.buryit{float:right;margin-left:20px;width:46px;height:52px;background:url(data:image/gif;base64,R0lGODlhLgA0AMQAAP////39/fn5+fj4+Pb29vX19fPz8/Ly8vHx8fDw8O/v7+7u7u3t7ezs7Ovr6+rq6ujo6Ofn5+bm5uXl5ePj4+Li4uHh4dzc3NfX19HR0c/Pz6qqqqioqKenp4WFhYODgyH5BAQUAP8ALAAAAAAuADQAAAX/IKCNZGmeaJqKUeu+cCzP80jfeN5mGeT/wKBwSCTyisik0sd7OJ/QqHRKpWYw1ax268RgHGDuFkwuO6Res3rNbre9jbh8Tq/b73fMpcHo+xl2f3iDdRcXC4iJiol/jY2LkIh/hpGQjpcMlYuTh5qMmI+ekn6UogugoaKcpqeofqyrpq6vsqSdqrOZtX2luLOwtsC/uwy9nrm6vsW3x7nCy6zR0ogXFgrX2Nna29zd3RYWCeLj5OXm5+jo4Ajs7e7v8PHy8hQUB/f4+fr7/P399QYCChxIsKDBgwcBIlzIsKGBCQAmSJxIsaLFixgxAtjIsaPHjyBDihxJsqTJjQVS8KpcybKly5cwIcCcSbOmSpk2c+pMiZOlAHYOFDhAQGBnzp4rN2z4wIEp0wpGayIFkOABB3MdPBh4+aHrB5pfb64UYJUDBwgdFXCYsNJr2LZu265EKoBDSAoftqp8O5MvX6QFzJpFyzHBWbhuu+5NmVgxz7EcAoA0XHQxS78FMItdedZsgo4HOFRmnNmy3NKoH6sEwAHBxwEcFlxOzZc06b8sIwg2S5WD3tNfa5cOG3xuSwEECPjoPdq2c8uaVb9ES3l25uKmoxcAPBdt3ebB/Tpu6dV4TAChBUSVClOADw4Smq93yX1scvnzWy7Zzz9ICAA7) no-repeat;text-align:center;cursor:pointer;margin-top:2px;padding-top:5px}.burynum{font-size:14px;color:#075db3;font-family:Verdana}.diggword{margin-top:5px;margin-left:0;font-size:12px;color:#808080}#profile_block{margin-top:5px;line-height:1.5;text-align:left}.blog_comment_body{word-wrap:break-word;overflow-wrap:break-word}#post_next_prev{line-height:1.8;font-size:12px}#post_next_prev a.p_n_p_prefix:link{text-decoration:none}#post_next_prev a.p_n_p_prefix:hover{text-decoration:underline}blockquote{border:2px solid #efefef;padding-left:10px;padding-right:10px;padding-top:5px;padding-bottom:5px;margin-top:10px;margin-bottom:10px}.blogpost-body blockquote{border-left:3px solid #e2dfdf;border-right:none;border-top:none;border-bottom:none}#green_channel{padding:10px 0;margin-bottom:10px;margin-top:10px;border:#c0c0c0 1px dashed;font-size:12px;width:350px;text-align:center}#green_channel a{background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAkCAYAAABIdFAMAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAHhJREFUeNo8zjsOxCAMBFB/KEAUFFR0Cbng3nQPw68ArZdAlOZppPFIBhH5EAB8b+Tlt9MYQ6i1BuqFaq1CKSVcxZ2Acs6406KUgpt5/LCKuVgz5BDCSb13ZO99ZOdcZGvt4mJjzMVKqcha68iIePB86GAiOv8CDADlIUQBs7MD3wAAAABJRU5ErkJggg%3D%3D) repeat-x;display:inline-block;padding:3px 8px;color:#fff;text-decoration:none;font-weight:bold;cursor:pointer;margin-right:10px;-moz-border-radius:5px;-webkit-border-radius:10px;-moz-box-shadow:0 1px 3px rgba(0,0,0,.5);-webkit-box-shadow:0 1px 3px rgba(0,0,0,.5);text-shadow:0 -1px 1px rgba(0,0,0,.25);vertical-align:middle}#green_channel a:hover{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAyCAYAAACd+7GKAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAClJREFUeNpi/v//vwMTAwPDfzjBgMpFI/7hFSOT9Y8qRuF3JLoHAQIMAHYtMmRA+CugAAAAAElFTkSuQmCC)}#green_channel #green_channel_digg{background-color:#2daebf}#green_channel #green_channel_follow{background-color:#e33100}#green_channel #green_channel_favorite{background-color:#ffb515}#green_channel #green_channel_weibo img{vertical-align:middle;border:none;margin-left:5px;box-shadow:none}#green_channel #green_channel_weibo,#green_channel #green_channel_wechat{background:none;padding:3px 2px;-moz-border-radius:none;-webkit-border-radius:none;-moz-box-shadow:none;-webkit-box-shadow:none;text-shadow:none}#green_channel #green_channel_wechat img{width:24px;height:24px;border:medium none;box-shadow:none;margin-left:5px;vertical-align:middle}#cnblogs_post_body{margin-bottom:20px}#cnblogs_post_body ul{margin-left:30px;padding-left:0}#cnblogs_post_body ul li{list-style-type:disc}#cnblogs_post_body ul ul li{list-style-type:circle}#cnblogs_post_body img{max-width:100%!important;height:auto}.ad_text_commentbox{margin-top:5px;margin-bottom:5px}#ad_t2{margin-top:5px;line-height:1.8}#ad_t2 a{margin-right:10px}#opt_under_post{line-height:1.8}input::-moz-focus-inner{border:0;padding:0}.CalTitle{width:100%}.pager{font-size:12px;margin:10px 0;text-align:center;color:#2e6ab1;line-height:200%}.pager a{border:1px solid #9aafe5;color:#2e6ab1;margin:0 2px;padding:2px 5px;text-decoration:none}.pager span.current{background-color:#2e6ab1;border:1px solid #000080;color:#fff;font-weight:bold;margin:0 2px;padding:2px 5px}.comment_vote{text-align:right}.comment_vote a{text-decoration:none!important;padding-left:10px}#cnblogs_post_body{word-break:break-word}#cnblogs_post_body p{margin:10px auto;text-indent:0}#cnblogs_post_body h1{font-size:28px;font-weight:bold;line-height:1.5;margin:10px 0}#cnblogs_post_body h2{font-size:21px;font-weight:bold;line-height:1.5;margin:10px 0}#cnblogs_post_body h3{font-size:16px;font-weight:bold;line-height:1.5;margin:10px 0}#cnblogs_post_body h4{font-size:14px;font-weight:bold;margin:10px 0}#div_digg .diggnum{line-height:1.5em!important}#div_digg .burynum{line-height:1.5em!important}#green_channel a:link,#green_channel a:visited,#green_channel a:active{color:#fff!important;border:none!important}.vertical-middle>*{vertical-align:middle}#blog-news{overflow:hidden}.under-comment-nav{margin-bottom:10px;margin-left:25px}#blog-comments-placeholder:empty{display:none}.login_tips{background-image:url(data:image/gif;base64,R0lGODlhEAAQAOZbAOny/v3+/lqIuT1wIOLu/lOMKKnB2omqzbTJ34+8Z9vq/c7c6tfo/ZSwhJOx0WyVwJGugWCJSbLSlff5/Pv8/efu9Y26ZDdrGUFzJXCYwuDt/vP3+uvx94usztrk793s/m6XwYe5YN/s/qO92Iu6YnCWXpeyiOnv9tXm/bHTkKa9mZ241dDj/dzm8Ex7Mejx/lePLd3r/vn7/NHk/eXw/tDk/dPm/dTm/dzq/d7s/tbn/WaOT3ugx2+XwuTv/o+7arbUnNnp/dDmurHFq9zr/X2iyF+Mu+bw/pm21Obx/oe6YFyKuvD2/oWny7HWktrp/Yy8ZYKjk+Pv/uHu/r7Q4z9xItHk/LTUlYGrYViHuP///////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAFsALAAAAAAQABAAAAemgFuCg4SFhoeGGw5LWY2OWU0VhB0GFFqXmFoIGRSCEwIBTABJPlM5CjhaPC2CHA9aL0dSGh8KDChaBwutrzQEGjFPDDczubtbnwEAIkRBOjY1VlpFHoOUAZgELACaGTKDigKNK5dDJTsRKog9FVFYV0I/MBCGI0hGESlOWlAJA4UnQFDZ4gIIJgkXEG2pQkKJlhD+FJooYEGChQL0FDbAcAFDgy2BAAA7);background-repeat:no-repeat;margin-top:10px;padding:0 0 10px 25px;font-weight:bold}.login_tips a{text-decoration:underline!important}.comment_quote{padding:5px 5px 5px 5px;border:1px solid #ccc}#comment_nav{text-align:right}#comment_nav a{padding-left:10px}@-webkit-keyframes ui-dialog-loading{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg)}}@keyframes ui-dialog-loading{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}html,body{margin:0;padding:0;font:12px/18px Verdana,"Lucida Grande",Geneva,Arial,sans-serif;background:#fff url(data:image/gif;base64,R0lGODlhAQCBAMQAAPX19UBETPHx8fPz8/T09Pf39/v7+/j4+PLy8vz8/Pn5+fb29vDw8Pr6+v7+/v39/aO7UDE2Pv///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAABAIEAAAUwYBCNZGmeYyBJTCsISDwMBAEAS14Ux6H8jaDBkCg+jg+H0rFqOp/QKBRCrVKlWGcIADs=) top left repeat-x;color:#333;text-align:center;margin-bottom:20px}body.has-navbar{background-position-y:42px}a{outline:none;text-decoration:none}a:link,a:visited{color:#69c}a:hover{color:#f36}.clear{clear:both}p{line-height:20px}ul{list-style:none;margin:0;padding:0}.navbar{padding-left:10px;padding-right:20px;background-color:#343434}.navbar>nav .navbar-branding img{filter:drop-shadow(1px 1px 2px #000)}.navbar a:link,.navbar a:active,.navbar a:visited{color:#999}.navbar>nav .navbar-search{background-color:rgba(255,255,255,.067)}div#container{min-width:960px;max-width:1600px;text-align:left;width:auto;padding:0 10px;margin:0 auto}div#wrapper{overflow:auto;margin:15px 10px}div#content{margin-right:465px;min-height:600px}div#sidebar{width:455px;position:absolute;right:10px;padding-bottom:20px}ul#topMnu{text-align:right;padding:3px;font-size:10px}ul#topMnu li{display:inline;border-right:1px solid #636870;padding:0 10px;color:#fff}ul#topMnu li a:link,ul#topMnu li a:visited{font-weight:bold;color:#fff}ul#topMnu li a:hover{font-weight:bold;color:#708033}div#header{height:90px;margin:0 10px}div#header h1{font-size:36px;letter-spacing:-2px;font-weight:normal;margin:0;padding:20px 0 10px 0}div#header h1 a:link,div#header h1 a:visited{color:#4b5698}div#header h1 a:hover{color:#f36}div#header h1 small{display:block;color:#666;font-size:12px;text-transform:uppercase;letter-spacing:-1px;margin:10px 0 0 0}ul#menu{float:right;line-height:20px}ul#menu li{background-image:url(data:image/gif;base64,R0lGODlhAwBLANUAANXX39bY39fZ4Pz8/dja4dvd4/3+/vLy9fX29+/v8vP09tvc493f5dze5Nnb4dna4ebn7Pf3+d7f5err7/39/uPk6enq7vDx9Ojp7eDh59nb4v7///j4+d/h5vn5+uLj6OHi6PT19+Xm6+vs8Pr7/Pz9/fb2+Pv8/Ozt8Pn6+97g5u7u8ufo7Nrb4uTl6vDw8/b3+Pr6+/Pz9dbX393e5Pv7/Pj5+v7+/v39/f///wAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAADAEsAAAaJwBwgl5vlboAbUhlgOm8CZRR6MxBuOAIO99g6tppta7vYFszbxpa2ZWwlW9W2s81sQdvPtrJ1bUU4NxBKLFgYgRZKE0ojSihKK0oJSi9KFzc5B0QyRApEIUQIRCZEMEQRRBxENkQeRClEMUQkRDVEJ0QDuUQlRDhEFEQGRJhHxMfGORtEzM3OREEAOw==);background-position:0 1px;background-repeat:no-repeat;padding:28px 0;display:inline;font-size:11px;margin:0;float:left}ul#menu li a{font-weight:bold;text-transform:uppercase;padding:30px 15px}ul#menu li a:link,ul#menu li a:visited{color:#31363e}ul#menu li a:hover{color:#f63}ul#menu li.current a{background-image:url(data:image/gif;base64,R0lGODlhDQAHAIABAEBETP///yH5BAEAAAEALAAAAAANAAcAAAIPhI8XyeGs3GtSpoojrmAXADs=);background-repeat:no-repeat;background-position:top center}ul#menu li.current a:link,ul#menu li.current a:visited{color:#565e39;text-decoration:underline}ul#menu li.current a:hover{color:#f36}ul#menu li#rss{text-indent:-9000em;width:64px;height:42px;display:block;padding:0 0 0 30px;margin:0}ul#menu li#rss a{background-image:url(data:image/gif;base64,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);background-repeat:no-repeat;display:block;width:64px;height:42px;position:relative;padding:0;margin:35px 0 0 0}ul#menu li#rss a:link,ul#menu li#rss a:visited{background-position:bottom right}ul#menu li#rss a:hover{background-position:top right}div.post{margin-bottom:30px}div.post h2{font-size:18px;letter-spacing:-1px;background-image:url(data:image/gif;base64,R0lGODlhBAABAIABAKurq////yH5BAEAAAEALAAAAAAEAAEAAAICRF4AOw==);background-position:bottom left;background-repeat:repeat-x;margin:0;padding:6px 0;font-weight:normal;line-height:120%}div.post small{font-size:12px;letter-spacing:normal;color:#ababab;display:block;text-align:right}div.post small a:link{color:#ababab}div.post small a:active{color:#ababab}div.post small a:visited{color:#ababab}div.post small a:hover{color:#369;text-decoration:underline}div.post div.entry h2{background-image:none}div.post div.entry{font:14px Georgia,"Times New Roman",Times,sans-serif;line-height:1.8;word-break:break-all}div.post div.entry p{margin:12px auto 12px auto;line-height:1.8}div.post div.entry p span{line-height:1.8}div.post div.entry a:link img,div.post div.entry a:visited img{background-color:#fff;border-color:#ddd}div.post div.entry a:hover img{background-color:#f5f5f5;border-color:#69c}div.post div.entry ul{margin:10px}div.post div.entry ul li{background-image:url(data:image/gif;base64,R0lGODlhBgAGAIABAIiIiP///yH5BAEAAAEALAAAAAAGAAYAAAIKjGEJyLvh0JHHFAA7);background-position:0 9px;background-repeat:no-repeat;padding:0 0 0 15px}div.post div.entry p a{border-bottom-width:1px;border-bottom-style:dashed}div.post div.entry a:link,div.post div.entry a:visited{color:#3d81ee}div.post div.entry a:hover{color:#f30}div.post ul.postmetadata{border-top:3px double #eee;border-bottom:3px double #eee;padding:4px 0;margin-bottom:10px;margin-top:10px;font-size:12px}div.post div.entry blockquote{background:#fff url(data:image/gif;base64,R0lGODlhIwAZALMAANra2tPT0/j4+Ofn5/X19dDQ0Pv7+97e3vHx8eTk5NfX1+Hh4evr6+7u7s3Nzf///yH5BAAAAAAALAAAAAAjABkAAATK8MlJKVOk6knW2BoTOE4CUsRBBqdEACSptM8Sk8I53AXTIqNYwgAywIS0XQyQAQmCjkDzpIr5ToTCkvY4RqcbgZa04HoDuZMBCuDaSIU0NRYgtpSkRvKGoAluJi1iWzReBXYnbyR9P4A0BmNRZjdgG3g3ZFcTBpg3Ch8VVZ2EEg2jPGBQpw6gDwmrpA+wMTMSorBysysTXrgTug4HE7eriAq6mq+zwhPKq7USCLpyD4OnaBW9nYwU0qMAiBNPowXcFQKXC3o6UJ8gEQA7) top left no-repeat;margin:0 auto;padding:0 0 0 45px;color:#666;font-size:13px;width:90%}div.post ul.postmetadata li{background-repeat:no-repeat;padding:2px 0 5px 20px;background-position:0 -170px}div.post ul.postmetadata li.icon_cat{background-image:var(--sf-img-10)}div.post ul.postmetadata li.icon_bullet{background-image:var(--sf-img-11)}div.post ul.postmetadata li a:link,div.post ul.postmetadata li a:visited{color:#00a200}div.post ul.postmetadata li a:hover{color:#333}h3#comments{font-weight:normal;font-size:14px;letter-spacing:-1px;color:#555;padding:0 0 0 25px;background-position:left;background-repeat:no-repeat}h3#comments{background-image:url(data:image/gif;base64,R0lGODlhEAAQAOZsAIqrzWGOvOnx+PH2+vH1+u70+uXs9Obv9+Tu9+Lq846uz/L3++/0+Pj7/ejw+JCv0KC71+30+r7Q43CYwurv9ufw+Ovy+fv9/uzz+WKPvPP4+5Wz0mCNu/r8/fL2+u/1+/D1+tjj7t7n8XWcxLnN4qO+2Ovz+VuJuezz+uDp8vL3+vL2+6rB26e/2fn7/Ofu9afA2nKZw63E3Pf5/MLT5XGZw3yiyGKOvIepzFyKurrO4l6Lu77R5PH1+V2Kum2WwY2tz2+Xwufv9+nv9u3z+t3n8VmHuKvD2/D2+9vl78fX52qUwOPr9Orx+Onw9ury+ezx+H2iyOvx95az0l2LuoaozPX5+9/o8c/d62eSvvv8/s3c67TJ3+3y98zb6vn7/aK81/D1+/T4+6vC2+Ls9vH2+8va6tHe6/H2+e/1+ouszvX4+////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAGwALAAAAAAQABAAAAfBgAZgaoSFDxJSbIqKEFhrj49iDDRHi4oAaxoLK0hhaRoUG5ZsmAsfaQUYFmmhowBWZWkRWzYBNwE5GRlLMAYKBFoRGFE8HgMDBAQgTjIKEixJFxccHqhEJhYCaQkTbCEPDGYnAwVPAg4HCALcilNeVRwqKAIV6WRCBj9sLgA4L1lQGtRD4KDJlxQx2PQYM4RNCwVnOnRowKRIiR1cRrFREgANCSNBRkBYo1FRDR0+rpS0NCMAFRErLXUBkiCmTUuBAAA7)}.addcomment{float:right;text-transform:uppercase;padding:3px 18px 3px 0;font-size:10px;margin:12px 0 0 0;text-decoration:underline}a.addcomment{background-image:url(data:image/gif;base64,R0lGODlhFAAoANUxALq6uoiIiH5+fvLy8rOzs3t7e+3t7efn5+/v719fX+7u7o2NjXNzc4+Pj7m5uWNjY5iYmLGxsfX19T4+Pn9/f6KioqamppKSkubm5r+/v5ycnFVVVaurq8DAwJGRkezs7GdnZ1xcXG5ubqioqFBQUJmZmeTk5FtbW0JCQvf395SUlEFBQW9vb1ZWVpeXl4aGhnx8fP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAADEALAAAAAAUACgAAAZhwJhwSCwaj8ikcslsOp/QqLMDIHAqkEsTAMg4CBpXM2UZRUoUg1OyUBUU0AFMLa3b7/i8fs/v+/+AQh4BAgwgJxtNAQENLwIJD00DIiwFISsmTggkLRMHUB8oGIGkpaZSQQA7);background-repeat:no-repeat}a.addcomment:link,a.addcomment:visited{background-position:100% 0}a.addcomment:hover{background-position:100% -20px}ol.commentlist{list-style:none;margin:0;padding:0}ol.commentlist cite{font-style:normal;font-size:12px}ol.commentlist cite a:link,ol.commentlist cite a:visited{background-image:var(--sf-img-14);background-position:0 0;background-repeat:no-repeat;padding:3px 0 0 20px;color:#093}ol.commentlist cite a:hover{color:#f30;background-position:0 -170px}ol.commentlist li{border-bottom:1px solid #eee;padding:10px}ol.commentlist h5{font-size:12px;margin:0 0 5px 0;padding:0}ol.commentlist h5 small{display:block;color:#a3bb50}ol.commentlist li.alt{background-color:#fff}div#sidebar{color:#666;font-size:12px;top:182px}div#sidebar a:link,div#sidebar a:visited{color:#06c}div#sidebar a:hover{color:#f30}div#sidebar h2{font-size:14px;color:#333;text-align:center;border-bottom:3px solid #ddd}div#sidebar div#sideRight{float:right;width:48%}div#sidebar div#sideLeft{float:left;width:48%}div#sidebar div#sideLeft h2,div#sidebar div#sideRight h2{background-color:#47505f;border-bottom:2px solid #2f353f;color:#fff;padding:5px 0;text-transform:uppercase;font-weight:normal}div#sidebar div#about h2{border-color:#dcd6b3;padding:5px 0 5px 0}div#sidebar div#about{background-color:#f8f8ee;border:1px solid #eee}div#sidebar div#about a{text-decoration:underline}div#sidebar div#about div{padding:5px}div#sidebar div#sideLeft ul li,div#sidebar div#sideRight ul li{border-bottom:1px solid #eee;padding:3px 0}div#sidebar div ul.bullet li a{background-image:var(--sf-img-11);background-repeat:no-repeat;padding:3px 0 3px 20px}div#sidebar div ul.bullet li a:hover{background-position:0 -170px}div#sidebar div ul.folder li{overflow:hidden}div#sidebar div ul.folder li a{background-image:var(--sf-img-10);background-repeat:no-repeat;padding:3px 0 3px 20px}div#sidebar div ul.folder li a:hover{background-position:0 -170px}div#sidebar div ul.date li a{background-image:url(data:image/gif;base64,R0lGODlhEADIAPcAAAAAAJIICJgcHLUKCrwfH70oKMcAAM8BAcwJCc4UFNADA9IHB9cAANwAANoLC9cSEtsUFNwREd0XF94bG94eHuYBAeEODu0DA+sPD+ESEvMTE+ImJugwMOk7O+N/f+d/f+t/f+1/f5GRkZWVlZiYmK6enqCgoK6hoaioqK+vr7m5uby8vL+/v8iDg8uNjdmCgtqGht2Pj96Tk8mzs8u1tc22ts64uOeBgeWEhOaJieiDg+yFheuIiO2Jie6Kiu2Li++OjvKAgPCGhvaAgPWHh/CIiPmJifGSkvOWlvOZmfSdncLCwsPDw8XFxcbGxsfHx8jIyMnJycrKysvLy8zMzM/Pz9bExNbOztDQ0NPT09bQ0NbW1tjY2Nvb29zc3N3d3d/f3+TZ2eXa2ubb2+Dg4OHh4eLi4uPj4+Tk5OXl5ebm5urh4ejo6Ovr6+3t7e7u7u/v7/Dw8PHx8fLy8vPz8/X19fb29vf39/j4+Pn5+fr6+vv7+/z8/P39/f7+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAQAMgAAAj/AP8JHEiwoMGDB81kIdNHYB81XMwQDOFBzJwwHkJQHDNHTEaBIXSskbPmxpAhN0au+RAC5A4tcK7kKCIEx5WYIFr+C0FEhosYQID44AGjxYsgOkMYUZIEyZEjQX/06DFEJ5o+WLNi3bPnTx80Aq9i1ZPGDpozXf74+Ro2a5otffjQYchnz5m2WbfU/TJHT547d/+JxaqXjhc4cN64CTy4j14wifv4gZMGb9Y9eeq48RPnT+V/X+5o5aOnThs4f+wKlAKmjOvXr82QkSIQC5TbuHPfpoKwt+/fwIMLH068uPHjyJMrX868ufPn0KNLn069uvXr2LNr3869u/fv4MOL/x9Pvrz58+jTq1/Pvr379/Djy59Pv779+/jz6//tBMWSPQLtUUUKThDUgAE0qDGDAQ0caIMaNTAoUAMLWHGGFQpccMEBFlpxQAMTOnACGSUkkIEFCJRAIgMg/tMABgUIQAAFE0jwwAABDFBBiw1o0AEHHGywAY0SQBDBBS1GwceSTNZ1xx1/8BGFQEouWccUb0jxhApqSUklk1OkgBkb/+mBBxRf7rFkCmauUBYdcKD5j5Jc7cEmGyqQAcYXXTyRJlcp5MECGV/w0QcZU1BZJ1d40NFGF32Y8Qdv/6wQh5pL5mGHG1yQ8ccdfv4zAgtMlGpqqU00scQIApkgwquwxgj6Kgn71WpeQAA7);background-repeat:no-repeat;padding:3px 0 3px 20px}div#sidebar div ul.date li a:hover{background-position:0 -170px}div#sidebar div ul.chain li a{background-image:var(--sf-img-14);background-repeat:no-repeat;padding:3px 0 3px 20px}div#sidebar div ul.chain li a:hover{background-position:0 -170px}div#sidebar div ul.voice li{overflow:hidden}div#sidebar div ul.voice li a{background-image:url(data:image/gif;base64,R0lGODlhFADIAPcAAAAAAFiHuFqIuVyKul+Mu2yVwG6XwW+XwnCYwnWcxHugx32iyIWny4mqzYuszpOx0Zm21J241aO92KnB2q3E3LTJ37XK4L7Q48TExMbGxsfHx8jIyM7Ozs/Pz9DQ0NPT09XV1dbW1tra2tvb29zc3N/f387c6trk79Dj/dHk/NDk/dPm/dXm/dfo/dzm8Nnp/dvq/dzq/d3r/t7s/uHh4ePj4+Xl5efn5+jo6Orq6uvr6+3t7efu9eDt/uLu/uTv/unv9uXw/uvx9+jx/uny/u/z+PLy8vX19fb29vf39/P3+vD2/vf5/Pj4+Pn5+fr6+vn7/Pv8/fz8/P39/f3+/v///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAUAMgAAAj/AP8JHEiwoMGDCBMqXMiwYUMpJTJgmEgRgwgnCEncmFKlo8cqOTxMMSgFAxUpT1I6cdKkSRUQSAw+4VBFJcsmSZJUGWFEJs0nK1smQYJkZ8+CJakAFUq0aIgjBzVS8egEyROQIg9CpFij45MaHzAy7OCkhgYcDm3Q2KDD4T8nHXa4nUu3rt27ePPq3cu3r9+/gAMLHky4sOHDiBMrXsy4sePHkCNLnky5suXLmDNr3sy5s+fPoEOLHk26tOnTqFOrXs26tevXsGPLnu1ZyYMBAXLrDsCAB0IHE6J89FgBQRSDTARQWUIkyA8fM2DEqKLAhUEhBaoMCeKjR/QWLKo0TjBxPTv3HjJegFchnnzB5FSIzIjxgsUKFSmqLDhxEPjUjj6gQEQVxUFxkG0C5BZBR0VEkIBvDB3AQwQDUOCQBBAQYIFbQBhwAW0ghvhYQAA7);background-repeat:no-repeat;padding:3px 0 3px 20px}div#sidebar div ul.voice li a:hover{background-position:0 -170px}div#sidebar div ul li a.child{background-image:url(data:image/gif;base64,R0lGODlhEADIAPcAAAAAAI2Njf///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAP8ALAAAAAAQAMgAAAh6AP8JHEiwoMGDCBMqXMiwocMADv8JiAjR4cSHES82DCCAo8eIIEOKHEmypMmTKFOqXMmypcuXMGPKnEmzps2bOHPq3Mmzp8+fQIMKHUq0qNGjSJMqXcq0qdOnUKNKnUq1qtWrWLOWBJAxIleLXrs6BCCArFmtaNP+DAgAOw==);background-repeat:no-repeat;padding:3px 0 3px 25px;display:block;color:#666}div#sidebar div ul li a.child:hover{color:#f30;background-position:0 -170px}div#sidebar div#sideMain h2{padding:5px 0 5px 0}div#sidebar div#sideMain div{background-image:url(data:image/gif;base64,R0lGODlhAQA3ALMAAP7+//z9/fv6+/39/vz8/fr6+/v7/Pv7+/z8/P39/f////7+/gAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAABADcAAAQZUBVRyrn4mL2R/whBBERinuYwLGzrtoAiRwA7);background-position:0 26px;background-repeat:repeat-x}div#sidebar div#sideMain div ul li{border-bottom:1px solid #eee;padding:2px 0}#mySearchWrapper{margin:10px auto;background-color:#444;border:2px solid #333}#mySearch{border:1px solid #565656;padding:5px 0;text-align:center}.lb_search{background-image:url(data:image/gif;base64,R0lGODlhEgASAOYAAJS4Q5/CSZm9RmuYIHqoJVqDG1+KHYm2KYGvJ0RERGaSHneQLH6XMIapPYutQFtvHVFuEd7sPV14GrffFlRxFLvSfeT0nl5lQlJ+A1d8CcneiNrtl6zNUktVK4GlO3qdOHmdN7rZWrbXWIyyObHSVYauOLTbOZW4RXyMH3yhN5u9SdfrlL7VgZq1P1SBA6zeEdjlKXuULpifY97wm0ZGQs3ijN7wms/pZrnRe2dwRNrnL97qX9Hlj9zqNsHhHXKgIuDym1FxDOPwSrrhOZGzQkdHRaHCTKfIT9LsaHONKHSpBk94BG6JJeXyUWqFI01mEsbchoiUVM3jIkxYKFhzF6THMWWAH6HRDtXtTnuRNsLZg9TnkbnXW2F8HOHynOf0V4CmN+HuRKvKQbngOVN/A7HSU6vNUI6yQaXITeLznH2iN7bYVomtPcTlXrvdWcDhXIGlOYWpO////wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAASABIAAAfWgEVRYkNjhoeIJi05CTJYSBZpkpOUXjNVFzs3QG2dnp+eXFlfNm+mp6ioIQxNG26vsLGxIjFCK2u4uWtyvLokC2FbZcPEcmUHB8bDHEkRPGbQ0XII0NPQR0w9NWjc3XIE3N/cRk46GgHo6LzrAT/oKlYwUAL0AusD+AP1J11SWgAA1ylQALAgACISfLA4w5CXAQMMIzJ0QGVCBTYY2RQokLEjmwYUXuCIQ7KkSZMeIFwZAaely5cvPzxBoaQEGDU4c+pMAWJJBxoPMrggQ7SoUQxBpiQIBAA7);background-position:0 0;background-repeat:no-repeat;text-indent:-9000em;padding:2px 0 10px 25px;height:14px}#mySearch input.keyword{font-size:11px;padding:2px;width:72%}#mySearch .submit{margin:0 5px 0 0;padding:0;width:70px;height:21px;position:relative;float:right}#newmsg{color:#f00;position:absolute;right:12px;padding-top:5px}.opt_comment{margin-left:0;margin-top:5px}.Cal{width:100%;height:200px}#BlogPostCategory{margin-bottom:0}@media only screen and (max-width:767px){div#sidebar{position:static;top:auto;right:auto;width:auto}div#content{margin-right:0}ul#topMnu{display:none}div#header{height:auto}div#container{min-width:auto}div#header h1{font-size:32px;letter-spacing:normal;padding:140px 0 10px 0}div.post h2{font-size:16px}div.post small{text-align:left}div#wrapper{overflow:visible}}</style>
+<style media="only screen and (max-width: 767px)">body{font-size:14px!important;-webkit-text-size-adjust:none}#blog_nav_rss{display:none!important}img{max-width:300px!important;height:auto}#green_channel{width:320px}.commentform{margin-left:10px}.navbar{display:none}</style>
+<link type=application/rss+xml rel=alternate href=https://www.cnblogs.com/skynet/rss>
+<link type=application/rsd+xml rel=EditURI href=https://www.cnblogs.com/skynet/rsd.xml>
+<link type=application/wlwmanifest+xml rel=wlwmanifest href=https://www.cnblogs.com/skynet/wlwmanifest.xml>
+<link id=favicon rel="shortcut icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PGRlZnM+PGNsaXBQYXRoIGlkPSJwcmVmaXhfX2NsaXAtcGF0aCI+PHBhdGggY2xhc3M9InByZWZpeF9fY2xzLTEiIGQ9Ik0yOS40OCAyNS4yNGMtLjE2LTEuODktLjA4LTEuNS0uMjQtMy4xNmE3Mi4yNCA3Mi4yNCAwIDAwLTItMTAuMzdMMjYgNi4yNWwtMi42IDUuNDEtLjQ0Ljg5cS0uMjQuNDgtLjU0IDFhMjAuNDMgMjAuNDMgMCAwMS0xLjI0IDEuODQgMjAuMDggMjAuMDggMCAwMS0zLjA4IDMuMjQgMTkuNzIgMTkuNzIgMCAwMS0zLjg3IDIuNTNjLS43Mi4zMy0xLjQ1LjcxLTIuMjMgMS0uMzQuMTQtMS4xOS40NC0xLjkzLjY2YTIuNTUgMi41NSAwIDAxLTEuMDctLjNjLS4zNC0xLS44My0yLjI0LTEuMi0zLjE5LS41LTEuMjUtMS0yLjUtMS41MS0zLjczYTU5LjExIDU5LjExIDAgMDAtMy42Mi03LjI1IDU5LjgyIDU5LjgyIDAgMDAxLjUxIDcuOTRjLjMgMS4zLjcgMi41OCAxLjA1IDMuODdTNiAyMi43MSA2LjQ0IDI0YTEuNCAxLjQgMCAwMDEuMjkuOTNjMS4yOCAwIDIuNTcuMDYgMy44Ni4wNXMyLjU5IDAgMy44OC0uMTFhNTYgNTYgMCAwMDcuNzktLjg3Yy0xLjkyLS40OS03LjUtLjgxLTEwLjc5LTEuMDZhNDMgNDMgMCAwMDYuNTMtMS43IDI0LjA2IDI0LjA2IDAgMDA1LjM4LTMuNDVjLjcxLS42MiAxLjIxIDEuODggMi4zOSA1LjI3LjYyIDEuNjkuMzQgMSAxIDIuNjZzMS4zNyA0LjM4IDIuMTcgNmMtLjA3LTEuODItLjMxLTQuNjctLjQ2LTYuNDh6Ii8+PC9jbGlwUGF0aD48Y2xpcFBhdGggaWQ9InByZWZpeF9fY2xpcC1wYXRoLTIiPjxwYXRoIGNsYXNzPSJwcmVmaXhfX2Nscy0xIiBkPSJNMjAuOTIgMy40NmE0LjI1IDQuMjUgMCAwMS4zMSA1Ljg2IDMuOTEgMy45MSAwIDAxLTUuNjYuMjQgNC4yNSA0LjI1IDAgMDEtLjMxLTUuODYgMy45MSAzLjkxIDAgMDE1LjY2LS4yNG0xLjM1LTEuNTRhNS44OSA1Ljg5IDAgMDAtOC41My4zNiA2LjQxIDYuNDEgMCAwMC40OCA4LjgzIDUuOTEgNS45MSAwIDAwOC41My0uMzYgNi40MSA2LjQxIDAgMDAtLjQ4LTguODN6Ii8+PC9jbGlwUGF0aD48c3R5bGU+LnByZWZpeF9fY2xzLTF7ZmlsbDojM2UzYTM5fUBtZWRpYSAocHJlZmVycy1jb2xvci1zY2hlbWU6ZGFyayl7LnByZWZpeF9fY2xzLTF7ZmlsbDojZWZlZmVmfX08L3N0eWxlPjwvZGVmcz48ZyBzdHlsZT0iaXNvbGF0aW9uOmlzb2xhdGUiPjxnIGlkPSJwcmVmaXhfX2xheWVyXzEiIGRhdGEtbmFtZT0ibGF5ZXIgMSI+PHBhdGggY2xhc3M9InByZWZpeF9fY2xzLTEiIGQ9Ik0yOS40OCAyNS4yNGMtLjE2LTEuODktLjA4LTEuNS0uMjQtMy4xNmE3Mi4yNCA3Mi4yNCAwIDAwLTItMTAuMzdMMjYgNi4yNWwtMi42IDUuNDEtLjQ0Ljg5cS0uMjQuNDgtLjU0IDFhMjAuNDMgMjAuNDMgMCAwMS0xLjI0IDEuODQgMjAuMDggMjAuMDggMCAwMS0zLjA4IDMuMjQgMTkuNzIgMTkuNzIgMCAwMS0zLjg3IDIuNTNjLS43Mi4zMy0xLjQ1LjcxLTIuMjMgMS0uMzQuMTQtMS4xOS40NC0xLjkzLjY2YTIuNTUgMi41NSAwIDAxLTEuMDctLjNjLS4zNC0xLS44My0yLjI0LTEuMi0zLjE5LS41LTEuMjUtMS0yLjUtMS41MS0zLjczYTU5LjExIDU5LjExIDAgMDAtMy42Mi03LjI1IDU5LjgyIDU5LjgyIDAgMDAxLjUxIDcuOTRjLjMgMS4zLjcgMi41OCAxLjA1IDMuODdTNiAyMi43MSA2LjQ0IDI0YTEuNCAxLjQgMCAwMDEuMjkuOTNjMS4yOCAwIDIuNTcuMDYgMy44Ni4wNXMyLjU5IDAgMy44OC0uMTFhNTYgNTYgMCAwMDcuNzktLjg3Yy0xLjkyLS40OS03LjUtLjgxLTEwLjc5LTEuMDZhNDMgNDMgMCAwMDYuNTMtMS43IDI0LjA2IDI0LjA2IDAgMDA1LjM4LTMuNDVjLjcxLS42MiAxLjIxIDEuODggMi4zOSA1LjI3LjYyIDEuNjkuMzQgMSAxIDIuNjZzMS4zNyA0LjM4IDIuMTcgNmMtLjA3LTEuODItLjMxLTQuNjctLjQ2LTYuNDh6Ii8+PGcgY2xpcC1wYXRoPSJ1cmwoI3ByZWZpeF9fY2xpcC1wYXRoKSI+PHBhdGggY2xhc3M9InByZWZpeF9fY2xzLTEiIGQ9Ik0tLjg3LS43OGgzNC40MnYzMy4wN0gtLjg3eiIvPjwvZz48cGF0aCBjbGFzcz0icHJlZml4X19jbHMtMSIgZD0iTTIwLjkyIDMuNDZhNC4yNSA0LjI1IDAgMDEuMzEgNS44NiAzLjkxIDMuOTEgMCAwMS01LjY2LjI0IDQuMjUgNC4yNSAwIDAxLS4zMS01Ljg2IDMuOTEgMy45MSAwIDAxNS42Ni0uMjRtMS4zNS0xLjU0YTUuODkgNS44OSAwIDAwLTguNTMuMzYgNi40MSA2LjQxIDAgMDAuNDggOC44MyA1LjkxIDUuOTEgMCAwMDguNTMtLjM2IDYuNDEgNi40MSAwIDAwLS40OC04LjgzeiIvPjxnIGNsaXAtcGF0aD0idXJsKCNwcmVmaXhfX2NsaXAtcGF0aC0yKSI+PHBhdGggY2xhc3M9InByZWZpeF9fY2xzLTEiIGQ9Ik0tLjg3LS43OGgzNC40MnYzMy4wN0gtLjg3eiIvPjwvZz48L2c+PC9nPjwvc3ZnPg==" type=image/svg+xml><style>.sf-hidden{display:none!important}</style><link rel=canonical href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html><body class=has-navbar><remove-web-limits-iqxin id=rwl-iqxin class=rwl-exempt style=position:fixed;top:0px;left:0px><qxinbutton type=qxinbutton id=rwl-setbtn> set </qxinbutton> <lalala style=cursor:move;font-size:12px>限制解除</lalala> <input type=checkbox name id=black_node><style class=sf-hidden>#rwl-iqxin{transform:translate(-95px,0);width:85px;height:25px;font-size:12px;font-weight:500;font-family:Verdana,Arial,'宋体';color:#fff;background:#333;z-index:2147483647;margin:0;opacity:0.05;transition:0.3s;overflow:hidden;user-select:none;text-align:center;white-space:nowrap;line-height:25px;padding:0 16px;border:1px solid #ccc;border-width:1px 1px 1px 0;border-bottom-right-radius:5px;box-sizing:content-box}#rwl-iqxin input{margin:0;padding:0;vertical-align:middle;-webkit-appearance:checkbox;-moz-appearance:checkbox;position:static;clip:auto;opacity:1;cursor:pointer}#rwl-iqxin #rwl-setbtn{margin:0 4px 0 0;padding:0 0 0 4px;border:none;border-radius:2px;cursor:pointer;background:#fff;color:#000}</style></remove-web-limits-iqxin>
+ <a name=top></a>
+ <div id=bannerbar class="formobile sf-hidden">
+ 
+ </div>
+ <div id=top_nav class=navbar>
+ <nav id=nav_main class=navbar-main>
+ <ul id=nav_left class="navbar-list navbar-left">
+ <li class=navbar-branding><a href=https://www.cnblogs.com/ title=开发者的网上家园><img src="data:image/svg+xml;base64,PHN2ZyBpZD0ibGF5ZXJfMSIgZGF0YS1uYW1lPSJsYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMjgwIDEwMi42NiI+PGRlZnM+PHN0eWxlPi5jbHMtMXtmaWxsOnVybCgjZ3JhZGllbnQpO30uY2xzLTJ7ZmlsbDojOGRjZWZjO30uY2xzLTMsLmNscy00e2ZpbGw6bm9uZTtzdHJva2UtbWl0ZXJsaW1pdDoxMDtzdHJva2Utd2lkdGg6MnB4O30uY2xzLTN7c3Ryb2tlOiM0NTdhYjU7fS5jbHMtNHtzdHJva2U6dXJsKCNncmFkaWVudF8zKTt9LmNscy01e2ZpbGw6dXJsKCNncmFkaWVudF8yKTt9LmNscy02e2ZpbGw6IzJlN2FjYzt9LmNscy03e2ZpbGw6I2UzM2UwNjt9LmNscy04e2ZpbGw6IzhjOGM4Yzt9PC9zdHlsZT48cmFkaWFsR3JhZGllbnQgaWQ9ImdyYWRpZW50IiBjeD0iNDkuMjIiIGN5PSItNjU1MC45NSIgcj0iNDQuNjIiIGdyYWRpZW50VHJhbnNmb3JtPSJtYXRyaXgoMSwgMCwgMCwgLTAuMDcsIDAsIC0zNTkuNDkpIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjOGM4YzhjIi8+PHN0b3Agb2Zmc2V0PSIwLjEzIiBzdG9wLWNvbG9yPSIjOTE5MTkxIiBzdG9wLW9wYWNpdHk9IjAuOTUiLz48c3RvcCBvZmZzZXQ9IjAuMzIiIHN0b3AtY29sb3I9IiNhMGEwYTAiIHN0b3Atb3BhY2l0eT0iMC44MyIvPjxzdG9wIG9mZnNldD0iMC41NCIgc3RvcC1jb2xvcj0iI2I4YjhiOCIgc3RvcC1vcGFjaXR5PSIwLjYxIi8+PHN0b3Agb2Zmc2V0PSIwLjc4IiBzdG9wLWNvbG9yPSIjZGFkYWRhIiBzdG9wLW9wYWNpdHk9IjAuMzIiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMCIvPjwvcmFkaWFsR3JhZGllbnQ+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkaWVudF8zIiBjeD0iLTE0Ny41NSIgY3k9Ii0yNjIuMjciIHI9IjIzLjI2IiBncmFkaWVudFRyYW5zZm9ybT0ibWF0cml4KDAuOTUsIC0wLjMyLCAtMC4zMiwgLTAuOTUsIDEyMS41LCAtMjc1LjYzKSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2ZmZiIvPjxzdG9wIG9mZnNldD0iMC4yMSIgc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwLjk5Ii8+PHN0b3Agb2Zmc2V0PSIwLjM0IiBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9IjAuOTYiLz48c3RvcCBvZmZzZXQ9IjAuNDYiIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMC45Ii8+PHN0b3Agb2Zmc2V0PSIwLjU2IiBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9IjAuODEiLz48c3RvcCBvZmZzZXQ9IjAuNjYiIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMC43MSIvPjxzdG9wIG9mZnNldD0iMC43NCIgc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwLjU4Ii8+PHN0b3Agb2Zmc2V0PSIwLjgzIiBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9IjAuNDIiLz48c3RvcCBvZmZzZXQ9IjAuOTEiIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMC4yNCIvPjxzdG9wIG9mZnNldD0iMC45OSIgc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwLjA0Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9IjAiLz48L3JhZGlhbEdyYWRpZW50PjxyYWRpYWxHcmFkaWVudCBpZD0iZ3JhZGllbnRfMiIgY3g9IjYxLjE5IiBjeT0iNTcuOTMiIHI9IjU0LjU2IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjN2FhY2RmIi8+PHN0b3Agb2Zmc2V0PSIwLjI3IiBzdG9wLWNvbG9yPSIjNzBhNmRkIi8+PHN0b3Agb2Zmc2V0PSIwLjczIiBzdG9wLWNvbG9yPSIjNTQ5NmQ5Ii8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjNDA4YmQ2Ii8+PC9yYWRpYWxHcmFkaWVudD48L2RlZnM+PHRpdGxlPuWNmuWuouWbrWxvZ288L3RpdGxlPjxnIGlkPSJsYXllcl8yIiBkYXRhLW5hbWU9ImxheWVyIDIiPjxnIGlkPSJsYXllcl8xLTIiIGRhdGEtbmFtZT0ibGF5ZXIgMS0yIj48ZWxsaXBzZSBjbGFzcz0iY2xzLTEiIGN4PSI0OS4yMiIgY3k9Ijk5LjQ0IiByeD0iNDQuNjIiIHJ5PSIzLjIyIi8+PHBhdGggY2xhc3M9ImNscy0yIiBkPSJNNDkuMjIsMUE0OC4yMiw0OC4yMiwwLDEsMCw5Ny40NCw0OS4yMiw0OC4yMiw0OC4yMiwwLDAsMCw0OS4yMiwxWk0zNCw3Ny4wNkExMC40NiwxMC40NiwwLDEsMSw0NC40Myw2Ni42LDEwLjQ2LDEwLjQ2LDAsMCwxLDM0LDc3LjA2Wm0yNS4xMS00YTYuNSw2LjUsMCwwLDEtNi41LTYuNWMwLTkuODEtOC41MS0xOC4xLTE4LjU4LTE4LjFhNi41LDYuNSwwLDAsMSwwLTEzYzE3LjEyLDAsMzEuNTgsMTQuMjQsMzEuNTgsMzEuMUE2LjUsNi41LDAsMCwxLDU5LjA4LDczLjFaTTc5LjcyLDY3bC0uNTYsMGE2LjUsNi41LDAsMCwxLTYuNDctNkM3MS4zNSw0NS4yOSw1OS41NywyOC41LDQwLjQsMjguNWE2LjUsNi41LDAsMCwxLDAtMTNDNjQsMTUuNSw4My40OCwzNC42Myw4NS42NSw2MEE2LjUxLDYuNTEsMCwwLDEsNzkuNzIsNjdaIi8+PGNpcmNsZSBjbGFzcz0iY2xzLTMiIGN4PSI0OS4yMiIgY3k9IjQ5LjIyIiByPSI0OC4yMiIvPjxwYXRoIGNsYXNzPSJjbHMtNCIgZD0iTTM1LjIsNS44OWMyMy44OC03Ljc4LDUwLDUuMzYsNTcuNDEsMjkuMDUiLz48cGF0aCBjbGFzcz0iY2xzLTUiIGQ9Ik00OS4yMiw0LjZBNDQuNjIsNDQuNjIsMCwxLDAsOTMuODQsNDkuMjIsNDQuNjIsNDQuNjIsMCwwLDAsNDkuMjIsNC42Wk0zNCw3Ny4wNkExMC40NiwxMC40NiwwLDEsMSw0NC40Myw2Ni42LDEwLjQ2LDEwLjQ2LDAsMCwxLDM0LDc3LjA2Wm0yNS4xMS00YTYuNSw2LjUsMCwwLDEtNi41LTYuNWMwLTkuODEtOC41MS0xOC4xLTE4LjU4LTE4LjFhNi41LDYuNSwwLDAsMSwwLTEzYzE3LjEyLDAsMzEuNTgsMTQuMjQsMzEuNTgsMzEuMUE2LjUsNi41LDAsMCwxLDU5LjA4LDczLjFaTTc5LjcyLDY3bC0uNTYsMGE2LjUsNi41LDAsMCwxLTYuNDctNkM3MS4zNSw0NS4yOSw1OS41NywyOC41LDQwLjQsMjguNWE2LjUsNi41LDAsMCwxLDAtMTNDNjQsMTUuNSw4My40OCwzNC42Myw4NS42NSw2MEE2LjUxLDYuNTEsMCwwLDEsNzkuNzIsNjdaIi8+PHBhdGggY2xhc3M9ImNscy02IiBkPSJNNzkuNzIsNjdsLS41NiwwYTYuNSw2LjUsMCwwLDEtNi40Ny02LDM5LjI0LDM5LjI0LDAsMCwwLTQuNDUtMTUsNTYuNjQsNTYuNjQsMCwwLDAtMzctMTMuNThBNTcsNTcsMCwwLDAsNS45MywzOC4zOSw0NC42MSw0NC42MSwwLDAsMCw4NS42Miw3NWE1MS40LDUxLjQsMCwwLDAtMi44Ni05QTYuNTUsNi41NSwwLDAsMSw3OS43Miw2N1pNMzQsNzcuMDZBMTAuNDYsMTAuNDYsMCwxLDEsNDQuNDMsNjYuNiwxMC40NiwxMC40NiwwLDAsMSwzNCw3Ny4wNlptMjUuMTEtNGE2LjUsNi41LDAsMCwxLTYuNS02LjVjMC05LjgxLTguNTEtMTguMS0xOC41OC0xOC4xYTYuNSw2LjUsMCwwLDEsMC0xM2MxNy4xMiwwLDMxLjU4LDE0LjI0LDMxLjU4LDMxLjFBNi41LDYuNSwwLDAsMSw1OS4wOCw3My4xWiIvPjxwYXRoIGNsYXNzPSJjbHMtNyIgZD0iTTExNS4wOCwyNC44OFYxMC4yNGg0LjI2VjI0Ljg4aDYuMDZ2NC4yaC02LjA2djM2aC00LjI2di0zNkgxMDguNnYtNC4yWk0xNTAuODQsNDcuOHYtM0gxNTV2M2g3Ljg2djMuODRIMTU1VjYwLjRjMCwzLjEyLTEuNTYsNC42OC00LjYyLDQuNjhoLTYuNmwtLjktNGMyLjEuMTgsNC4xNC4zLDYuMDYuMywxLjIsMCwxLjg2LS42NiwxLjg2LTJWNTEuNjRoLTI2VjQ3LjhabS05LTMzLjM2VjEwLjNIMTQ2djQuMTRoN2EzNC4wOCwzNC4wOCwwLDAsMC0xLjc0LTMuNmwzLjcyLS42YTM5LjE5LDM5LjE5LDAsMCwxLDEuNTYsNC4yaDUuMTZWMTguMUgxNDZ2NC4xNGgxMy42VjQ0aC00VjM5LjgySDE0NlY0My42aC00LjE0VjM5LjgySDEzMi4zVjQ0aC00VjIyLjI0aDEzLjU2VjE4LjFIMTI2LjE4VjE0LjQ0Wk0xNDIsNTkuMzhsLTIuNywyLjdBNTYuNjEsNTYuNjEsMCwwLDAsMTMxLDU0LjM0bDIuNjQtMi41MkE1OC41Miw1OC41MiwwLDAsMSwxNDIsNTkuMzhabS0uMTItMjkuNThWMjUuNkgxMzIuM3Y0LjJabTAsNy4wOFYzMi44SDEzMi4zdjQuMDhaTTE0NiwyOS44aDkuNlYyNS42SDE0NlptMCw3LjA4aDkuNlYzMi44SDE0NloiLz48cGF0aCBjbGFzcz0iY2xzLTciIGQ9Ik0xOTIuMDYsMjAuNjhjLS45LDEuMzgtMS44LDIuNy0yLjc2LDRoMjIuMTR2My40OGEzMi43MywzMi43MywwLDAsMS0xMC42Miw5LjA2LDc0Ljc1LDc0Ljc1LDAsMCwwLDIyLDQuNzRsLTEsMy45YTcwLDcwLDAsMCwxLTI1LjUtNi40MmMtNy4wOCwzLjI0LTE2LDUuNzYtMjYuODIsNy42MmwtMS42Mi0zLjg0YzkuNjYtMS41NiwxNy43LTMuNTQsMjQuMDYtNi4wNkE1NC45Myw1NC45MywwLDAsMSwxODMuNDgsMzFhNTcuMiw1Ny4yLDAsMCwxLTcuNSw1LjY0bC0yLjc2LTMuMzZhNDQuNTIsNDQuNTIsMCwwLDAsMTQuNjQtMTMuNVpNMjE5Ljc4LDI2SDIxNS40VjE4LjUyaC00MFYyNkgxNzFWMTQuNjJoMjJhMzkuMTUsMzkuMTUsMCwwLDAtMi4yMi00LjJsNC43NC0uNzJjLjcyLDEuNDQsMS4zOCwzLjEyLDIuMSw0LjkyaDIyLjE0Wm0tNi43MiwzOS4zNmgtNC4yVjYyLjc0aC0yNS44djIuNThoLTQuMlY0Ni41NGgzNC4yWm0tNC4yLTYuNDh2LTguNGgtMjUuOHY4LjRaTTIwNi4yOCwyOC4zaC0yMC4xbC0uMTguMThhNTMuNiw1My42LDAsMCwwLDEwLjM4LDYuNzJBMzYsMzYsMCwwLDAsMjA2LjI4LDI4LjNaIi8+PHBhdGggY2xhc3M9ImNscy03IiBkPSJNMjgwLDY1LjE0aC00LjMydi0yLjRIMjM1LjJ2Mi40aC00LjMyVjEyLjgySDI4MFptLTQuMzItNi4yNFYxNi43OEgyMzUuMlY1OC45Wm0tNC4yLTI2LjM0VjM2LjRoLTkuNlY0OC43YzAsMS40NC42LDIuMTYsMS45MiwyLjE2SDI2NmEzLjA1LDMuMDUsMCwwLDAsMS45Mi0uNTRjLjcyLS40MiwxLjE0LTIuNTIsMS4zOC02LjI0bDMuNiwxLjJjLS40OCw0LjQ0LTEuMDgsNy4xNC0xLjkyLDhzLTIuMTYsMS4wOC00LjE0LDEuMTRIMjYyLjVhNC40Niw0LjQ2LDAsMCwxLTMuNDItMS4zMiw1LDUsMCwwLDEtMS4yLTMuNDhWMzYuNGgtNS43Yy0uNTQsNC45Mi0xLjY4LDguNy0zLjQ4LDExLjQ2LTIsMy4xMi01LjIyLDUuNTItOS40Miw3LjMybC0yLTMuNDhhMTYuNDksMTYuNDksMCwwLDAsOC4xNi02LjEyLDIyLjQzLDIyLjQzLDAsMCwwLDIuODgtOS4xOEgyMzkuNFYzMi41NlptLTMuNC0xMC4yNnYzLjg0SDI0Mi44MlYyMi4zWiIvPjxwYXRoIGNsYXNzPSJjbHMtOCIgZD0iTTEyMy4zNyw3OWE2LjE4LDYuMTgsMCwwLDEsNS4zMSwyLjUybC0xLjUsMS4zOGE0LjMyLDQuMzIsMCwwLDAtMy42OS0xLjljLTMuMDksMC01LDIuMzctNSw1LjU4czEuOTIsNS42MSw1LDUuNjFhNC4zNyw0LjM3LDAsMCwwLDMuNjktMS44OWwxLjUsMS4zOGE2LjE4LDYuMTgsMCwwLDEtNS4zMSwyLjUyYy00LjMyLDAtNy4yMy0zLjMtNy4yMy03LjYyUzExOS4wNSw3OSwxMjMuMzcsNzlaIi8+PHBhdGggY2xhc3M9ImNscy04IiBkPSJNMTQxLjYxLDg0LjM2YzAtMi41NS0xLjI5LTMuMzYtMy4yNC0zLjM2YTUuNTksNS41OSwwLDAsMC00LjI5LDIuMjVWOTMuODRoLTIuMjVWNzkuMzVoMi4yNXYyLjFBNy4yMiw3LjIyLDAsMCwxLDEzOS4yNCw3OWMzLDAsNC42MiwxLjUzLDQuNjIsNC42OFY5My44NGgtMi4yNVoiLz48cGF0aCBjbGFzcz0iY2xzLTgiIGQ9Ik0xNDguMzYsNzMuODNoMi4yNXY3LjcxQTYsNiwwLDAsMSwxNTUuNSw3OWMzLjc4LDAsNi40NSwzLDYuNDUsNy42MnMtMi42Nyw3LjU5LTYuNDUsNy41OWE2LjExLDYuMTEsMCwwLDEtNC44OS0yLjUydjIuMTZoLTIuMjVabTYuNTcsMTguMzZjMi45NCwwLDQuNjgtMi4zNyw0LjY4LTUuNThTMTU3Ljg3LDgxLDE1NC45Myw4MWE1LjM5LDUuMzksMCwwLDAtNC4zMiwyLjM0djYuNTdhNS4zNiw1LjM2LDAsMCwwLDQuMzIsMi4yOFoiLz48cGF0aCBjbGFzcz0iY2xzLTgiIGQ9Ik0xNjUuNjEsNzMuODNoMi4yNXYyMGgtMi4yNVoiLz48cGF0aCBjbGFzcz0iY2xzLTgiIGQ9Ik0xNzEuNTIsODYuNThjMC00LjIsMi43Ni03LjU5LDcuMTctNy41OXM3LjE3LDMuMzksNy4xNyw3LjU5LTIuNzYsNy42Mi03LjE3LDcuNjJTMTcxLjUyLDkwLjc4LDE3MS41Miw4Ni41OFptMTIsMGMwLTIuOTQtMS43MS01LjU4LTQuOC01LjU4cy00LjgzLDIuNjQtNC44Myw1LjU4LDEuNzQsNS42MSw0LjgzLDUuNjEsNC43Ny0yLjY0LDQuNzctNS42MVoiLz48cGF0aCBjbGFzcz0iY2xzLTgiIGQ9Ik0xOTAuNjMsOTUuODhhNS41Myw1LjUzLDAsMCwwLDQuNzEsMmMyLjQsMCw0LjY1LTEuMTcsNC42NS00LjM1VjkxLjQ0QTYuMDYsNi4wNiwwLDAsMSwxOTUuMTMsOTRjLTMuNzgsMC02LjQ1LTIuODItNi40NS03LjVzMi42NC03LjUsNi40NS03LjVBNiw2LDAsMCwxLDIwMCw4MS41NFY3OS4zNWgyLjI1VjkzLjQyYzAsNC44LTMuMzYsNi4zLTYuOSw2LjNhNy4zOSw3LjM5LDAsMCwxLTUuODUtMi4xNlpNMjAwLDgzLjM0QTUuMzQsNS4zNCwwLDAsMCwxOTUuNjcsODFjLTIuOTEsMC00LjY1LDIuMzEtNC42NSw1LjUyUzE5Mi43Niw5MiwxOTUuNjcsOTJBNS4zNiw1LjM2LDAsMCwwLDIwMCw4OS42N1oiLz48cGF0aCBjbGFzcz0iY2xzLTgiIGQ9Ik0yMDYuNjUsOTAuM2E2LjU0LDYuNTQsMCwwLDAsNC43NywyLjA3YzIuMjIsMCwzLjQyLTEsMy40Mi0yLjQsMC0xLjU5LTEuNzctMi4xLTMuNzItMi41OC0yLjQ2LS41Ny01LjI1LTEuMjMtNS4yNS00LjIzLDAtMi4yNSwxLjk1LTQuMTcsNS40LTQuMTdhNy4zNiw3LjM2LDAsMCwxLDUuMzcsMi4xbC0xLDEuNTZhNS42Miw1LjYyLDAsMCwwLTQuMzItMS44M2MtMiwwLTMuMjEuOS0zLjIxLDIuMTlzMS42NSwxLjg2LDMuNTQsMi4zMWMyLjUyLjU3LDUuNDMsMS4yOSw1LjQzLDQuNSwwLDIuNDMtMiw0LjM4LTUuNyw0LjM4YTcuNzEsNy43MSwwLDAsMS01Ljg1LTIuMjhaIi8+PHBhdGggY2xhc3M9ImNscy04IiBkPSJNMjIxLjg5LDkwLjg0YTEuNjUsMS42NSwwLDEsMS0xLjY1LDEuNjVoMEExLjY2LDEuNjYsMCwwLDEsMjIxLjg5LDkwLjg0WiIvPjxwYXRoIGNsYXNzPSJjbHMtOCIgZD0iTTIzMy43Nyw3OWE2LjE4LDYuMTgsMCwwLDEsNS4zMSwyLjUybC0xLjUsMS4zOGE0LjMyLDQuMzIsMCwwLDAtMy42OS0xLjljLTMuMDksMC01LDIuMzctNSw1LjU4czEuOTIsNS42MSw1LDUuNjFhNC4zNyw0LjM3LDAsMCwwLDMuNjktMS44OWwxLjUsMS4zOGE2LjE4LDYuMTgsMCwwLDEtNS4zMSwyLjUyYy00LjMyLDAtNy4yMy0zLjMtNy4yMy03LjYyUzIyOS40NSw3OSwyMzMuNzcsNzlaIi8+PHBhdGggY2xhc3M9ImNscy04IiBkPSJNMjQxLjM5LDg2LjU4YzAtNC4yLDIuNzYtNy41OSw3LjE3LTcuNTlzNy4xNywzLjM5LDcuMTcsNy41OVMyNTMsOTQuMiwyNDguNTYsOTQuMiwyNDEuMzksOTAuNzgsMjQxLjM5LDg2LjU4Wm0xMiwwYzAtMi45NC0xLjcxLTUuNTgtNC44LTUuNThzLTQuODMsMi42NC00LjgzLDUuNTgsMS43NCw1LjYxLDQuODMsNS42MSw0Ljc3LTIuNjQsNC43Ny01LjYxWiIvPjxwYXRoIGNsYXNzPSJjbHMtOCIgZD0iTTI3Ni44OCw4NGMwLTEuODMtLjgxLTMtMi42Ny0zYTUuMDcsNS4wNywwLDAsMC0zLjg0LDIuMjJWOTMuODRoLTIuMjVWODRjMC0xLjgzLS43OC0zLTIuNjctM2E1LjA5LDUuMDksMCwwLDAtMy44MSwyLjI1VjkzLjg0aC0yLjI1Vjc5LjM1aDIuMjV2Mi4xQTYuMjUsNi4yNSwwLDAsMSwyNjYuMzIsNzlhMy43MiwzLjcyLDAsMCwxLDMuOSwyLjcsNi4xLDYuMSwwLDAsMSw0Ljg2LTIuN2MyLjY0LDAsNC4wNSwxLjQ3LDQuMDUsNC4zOFY5My44NGgtMi4yNVoiLz48L2c+PC9nPjwvc3ZnPg==" alt=博客园Logo></a></li>
+ <li><a href=https://www.cnblogs.com/>首页</a></li>
+ <li><a href=https://news.cnblogs.com/>新闻</a></li>
+ <li><a href=https://q.cnblogs.com/>博问</a></li>
+ <li><a id=nav_brandzone href=https://brands.cnblogs.com/>专区</a></li>
+ <li><a href=https://ing.cnblogs.com/>闪存</a></li>
+ <li><a href=https://edu.cnblogs.com/>班级</a></li>
+ </ul>
+ <ul id=nav_right class="navbar-list navbar-right">
+ <li>
+ <form id=zzk_search class=navbar-search action=https://zzk.cnblogs.com/s>
+ <input name=w id=zzk_search_input placeholder=代码改变世界 type=text tabindex=3 value>
+ <button type=submit id=zzk_search_button>
+ <img src=data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjAgMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgc3Ryb2tlLXdpZHRoPSIyIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxIDEuNDU4KSIgc3Ryb2tlPSIjOTc5Nzk3IiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxjaXJjbGUgY3g9IjcuNSIgY3k9IjcuNSIgcj0iNy41Ii8+PHBhdGggZD0iTTEyLjQ5NCAxMi4wNDhsNy43NzggNy43NzgiLz48L2c+PC9zdmc+ alt=搜索>
+ </button>
+ </form>
+ </li>
+ <li id=navbar_login_status class=navbar-list>
+ <a id=navblog-myblog-icon class="navbar-user-info navbar-blog" href=https://passport.cnblogs.com/GetBlogApplyStatus.aspx alt=我的博客 title=我的博客 style=display:none>
+ 
+ </a>
+ <a class="navbar-user-info navbar-message navbar-icon-wrapper" href=https://msg.cnblogs.com/ alt=短消息 title=短消息 style=display:none>
+ 
+ 
+ </a>
+ <div id=user_info class="navbar-user-info dropdown" style=display:none>
+ 
+ 
+ </div>
+ <a class=navbar-anonymous href=https://account.cnblogs.com/signup/ style=display:inline>注册</a>
+ <a class=navbar-anonymous href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html style=display:inline>登录</a>
+ </li>
+ </ul>
+ </nav>
+ </div>
+ 
+ 
+<div id=container>
+ <a class="minyx sf-hidden" href=https://www.cnblogs.com/>代码改变世界</a>
+ <ul id=topMnu>
+ 
+ <li>
+ Posts - 
+107, 
+Articles - 
+0, 
+Comments - 
+1779
+ </li>
+ 
+ 
+ <li><a href=https://www.cnblogs.com/>Cnblogs</a></li>
+ 
+ <li id=topMnu-dashboard>
+ <a id=lnkDashboard href=https://i.cnblogs.com/>Dashboard</a>
+ </li>
+ <li>
+ 
+ <a id=lnkLogin href="https://account.cnblogs.com/signin/?returnUrl=https://www.cnblogs.com/skynet/">Login</a>
+ </li>
+ </ul>
+ 
+ <div id=header>
+ <ul id=menu>
+ 
+ <li id=menu-home class=current>
+ <a id=lnkHome href=https://www.cnblogs.com/skynet/>Home</a></li>
+ 
+ <li id=menu-contact>
+ <a id=lnkContact href=https://msg.cnblogs.com/send/%E5%90%B4%E7%A7%A6>Contact</a></li>
+ 
+ <li id=menu-gallary>
+ <a id=lnkGallery href=https://www.cnblogs.com/skynet/gallery.html>Gallery</a></li>
+ 
+ <li id=menu-subscribe>
+ <a id=blog_nav_rss href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html data-rss=https://www.cnblogs.com/skynet/rss/>Subscribe</a></li>
+ 
+ <li id=rss>
+ <a id=lnkRss href=https://www.cnblogs.com/skynet/rss/>RSS</a></li>
+ </ul>
+ <div id=newmsg></div>
+ <h1>
+ 
+ <a id=lnkBlogTitle href=https://www.cnblogs.com/skynet/>吴秦（Tyler）</a>
+ 
+ <small>
+ 
+ </small>
+ </h1>
+ </div>
+ 
+ <div id=wrapper>
+ <div id=content>
+ 
+ <div id=post_detail>
+<div class=post id=post>
+ <a name=top></a>
+ <h2>
+<a id=cb_post_title_url class="postTitle2 vertical-middle" href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>
+ <span>Linux Socket编程（不限Linux）</span>
+ 
+</a>
+</h2>
+ <small>
+<span id=post-date>2010-12-12 21:58</span>&nbsp;
+<a href=https://www.cnblogs.com/skynet/>吴秦</a>&nbsp;
+阅读(<span id=post_view_count>319872</span>)&nbsp;
+评论(<span id=post_comment_count>80</span>)&nbsp;
+<a href="https://i.cnblogs.com/EditPosts.aspx?postid=1903949" rel=nofollow>编辑</a>&nbsp;
+<a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>收藏</a></small>
+ <div class=entry>
+ 
+<div id=cnblogs_post_body class=blogpost-body>
+ <p align=right>“一切皆Socket！”</p>
+<p align=right>话虽些许夸张，但是事实也是，现在的网络编程几乎都是用的socket。</p>
+<p align=right>——有感于实际编程和开源项目研究。</p>
+<p align=justify>我们深谙信息交流的价值，那网络中进程之间如何通信，如我们每天打开浏览器浏览网页时，浏览器的进程怎么与web服务器通信的？当你用QQ聊天时，QQ进程怎么与服务器或你好友所在的QQ进程通信？这些都得靠socket？那什么是socket？socket的类型有哪些？还有socket的基本函数，这些都是本文想介绍的。本文的主要内容如下：</p>
+<ul>
+<li>
+<div align=justify>1、网络中进程之间如何通信？</div>
+</li>
+<li>
+<div align=justify>2、Socket是什么？</div>
+</li>
+<li>
+<div align=justify>3、socket的基本操作</div>
+<ul>
+<li>
+<div align=justify>3.1、socket()函数</div>
+</li>
+<li>
+<div align=justify>3.2、bind()函数</div>
+</li>
+<li>
+<div align=justify>3.3、listen()、connect()函数</div>
+</li>
+<li>
+<div align=justify>3.4、accept()函数</div>
+</li>
+<li>
+<div align=justify>3.5、read()、write()函数等</div>
+</li>
+<li>
+<div align=justify>3.6、close()函数</div>
+</li>
+</ul>
+</li>
+<li>
+<div align=justify>4、socket中TCP的三次握手建立连接详解</div>
+</li>
+<li>
+<div align=justify>5、socket中TCP的四次握手释放连接详解</div>
+</li>
+<li>
+<div align=justify>6、一个例子（实践一下）</div>
+</li>
+<li>7、留下一个问题，欢迎大家回帖回答！！！</li>
+</ul>
+<h1 align=justify>1、网络中进程之间如何通信？</h1>
+<p align=justify>本地的进程间通信（IPC）有很多种方式，但可以总结为下面4类：</p>
+<ul>
+<li>
+<div align=justify>消息传递（管道、FIFO、消息队列）</div>
+</li>
+<li>
+<div align=justify>同步（互斥量、条件变量、读写锁、文件和写记录锁、信号量）</div>
+</li>
+<li>
+<div align=justify>共享内存（匿名的和具名的）</div>
+</li>
+<li>
+<div align=justify>远程过程调用（Solaris门和Sun RPC）</div>
+</li>
+</ul>
+<p align=justify>但这些都不是本文的主题！我们要讨论的是网络中进程之间如何通信？首要解决的问题是如何唯一标识一个进程，否则通信无从谈起！在本地可以通过进程PID来唯一标识一个进程，但是在网络中这是行不通的。其实TCP/IP协议族已经帮我们解决了这个问题，<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>网络层的“<strong>ip地址</strong>”</span>可以唯一标识网络中的主机，而<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>传输层的“<strong>协议+端口</strong>”</span>可以唯一标识主机中的应用程序（进程）。这样利用三元组（ip地址，协议，端口）就可以标识网络的进程了，网络中的进程通信就可以利用这个标志与其它进程进行交互。</p>
+<p align=justify>使用TCP/IP协议的应用程序通常采用应用编程接口：UNIX&nbsp; BSD的套接字（socket）和UNIX System V的TLI（已经被淘汰），来实现网络进程之间的通信。就目前而言，几乎所有的应用程序都是采用socket，而现在又是网络时代，网络中进程通信是无处不在，这就是我为什么说“一切皆socket”。</p>
+<h1 align=justify>2、什么是Socket？</h1>
+<p align=justify>上面我们已经知道网络中的进程是通过socket来通信的，那什么是socket呢？socket起源于Unix，而Unix/Linux基本哲学之一就是“一切皆文件”，都可以用“打开open –&gt; 读写write/read –&gt; 关闭close”模式来操作。我的理解就是Socket就是该模式的一个实现，socket即是一种特殊的文件，一些socket函数就是对其进行的操作（读/写IO、打开、关闭），这些函数我们在后面进行介绍。</p>
+<blockquote>
+<h3 align=justify>socket一词的起源</h3>
+<p align=justify>在组网领域的首次使用是在1970年2月12日发布的文献<a href=http://datatracker.ietf.org/doc/rfc33/ target=_blank>IETF RFC33</a>中发现的，撰写者为Stephen Carr、Steve Crocker和Vint Cerf。根据美国计算机历史博物馆的记载，Croker写道：“命名空间的元素都可称为套接字接口。一个套接字接口构成一个连接的一端，而一个连接可完全由一对套接字接口规定。”计算机历史博物馆补充道：“这比BSD的套接字接口定义早了大约12年。”</p>
+</blockquote>
+<h1 align=justify>3、socket的基本操作</h1>
+<p align=justify>既然socket是“open—write/read—close”模式的一种实现，那么socket就提供了这些操作对应的函数接口。下面以TCP为例，介绍几个基本的socket接口函数。</p>
+<h2 align=justify>3.1、socket()函数</h2>
+<div>
+<pre><span style=color:rgba(0,0,255,1)>int</span> <span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small><strong>socket</strong></span>(<span style=color:rgba(0,0,255,1)>int</span> domain, <span style=color:rgba(0,0,255,1)>int</span> type, <span style=color:rgba(0,0,255,1)>int</span> protocol);</pre>
+</div>
+<p>socket函数对应于普通文件的打开操作。普通文件的打开操作返回一个文件描述字，而<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small><strong>socket()</strong></span>用于创建一个socket描述符（socket descriptor），它唯一标识一个socket。这个socket描述字跟文件描述字一样，后续的操作都有用到它，把它作为参数，通过它来进行一些读写操作。</p>
+<p>正如可以给fopen的传入不同参数值，以打开不同的文件。创建socket的时候，也可以指定不同的参数创建不同的socket描述符，socket函数的三个参数分别为：</p>
+<ul>
+<li>domain：即协议域，又称为协议族（family）。常用的协议族有，<span color=#d16349 style=color:rgba(209,99,73,1)>AF_INET</span>、<span color=#d16349 style=color:rgba(209,99,73,1)>AF_INET6</span>、<span color=#d16349 style=color:rgba(209,99,73,1)>AF_LOCAL</span>（或称<span color=#d16349 style=color:rgba(209,99,73,1)>AF_UNIX</span>，Unix域socket）、<span color=#d16349 style=color:rgba(209,99,73,1)>AF_ROUTE</span>等等。协议族决定了socket的地址类型，在通信中必须采用对应的地址，如AF_INET决定了要用ipv4地址（32位的）与端口号（16位的）的组合、AF_UNIX决定了要用一个绝对路径名作为地址。 
+</li>
+<li>type：指定socket类型。常用的socket类型有，<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>SOCK_STREAM</span>、<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>SOCK_DGRAM</span>、<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>SOCK_RAW</span>、<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>SOCK_PACKET</span>、<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>SOCK_SEQPACKET</span>等等（socket的类型有哪些？）。 
+</li>
+<li>protocol：故名思意，就是指定协议。常用的协议有，<span color=#d16349 style=color:rgba(209,99,73,1)>IPPROTO_TCP</span>、<span color=#d16349 style=color:rgba(209,99,73,1)>IPPTOTO_UDP</span>、<span color=#d16349 style=color:rgba(209,99,73,1)>IPPROTO_SCTP</span>、<span color=#d16349 style=color:rgba(209,99,73,1)>IPPROTO_TIPC</span>等，它们分别对应TCP传输协议、UDP传输协议、STCP传输协议、TIPC传输协议（这个协议我将会单独开篇讨论！）。 </li>
+</ul>
+<p>注意：并不是上面的type和protocol可以随意组合的，如SOCK_STREAM不可以跟IPPROTO_UDP组合。当protocol为0时，会自动选择type类型对应的默认协议。</p>
+<p>当我们调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small><strong>socket</strong></span>创建一个socket时，返回的socket描述字它存在于协议族（address family，AF_XXX）空间中，但没有一个具体的地址。如果想要给它赋值一个地址，就必须调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>bind()</span>函数，否则就当调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>connect()</span>、<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>listen()</span>时系统会自动随机分配一个端口。</p>
+<h2>3.2、bind()函数</h2>
+<p>正如上面所说bind()函数把一个地址族中的特定地址赋给socket。例如对应<span color=#d16349 style=color:rgba(209,99,73,1)>AF_INET</span>、<span color=#d16349 style=color:rgba(209,99,73,1)>AF_INET6</span>就是把一个ipv4或ipv6地址和端口号组合赋给socket。</p>
+<div>
+<pre><span style=color:rgba(0,0,255,1)>int</span> <span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>bind</span>(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>const</span> <span style=color:rgba(0,0,255,1)>struct</span> sockaddr *addr, socklen_t addrlen);</pre>
+</div>
+<p>函数的三个参数分别为：</p>
+<ul>
+<li>sockfd：即socket描述字，它是通过socket()函数创建了，唯一标识一个socket。<span color=#d16349 size=2 style=color:rgba(209,99,73,1);font-size:x-small>bind</span>()函数就是将给这个描述字绑定一个名字。 
+</li>
+<li>addr：一个<span style=color:rgba(0,0,255,1)>const</span> <span style=color:rgba(0,0,255,1)>struct</span> sockaddr *指针，指向要绑定给sockfd的协议地址。这个地址结构根据地址创建socket时的地址协议族的不同而不同，如ipv4对应的是： <br>
+<div>
+<pre><span style=color:rgba(0,0,255,1)>struct</span> sockaddr_in {
+    sa_family_t    sin_family; <span style=color:rgba(0,128,0,1)>/* address family: AF_INET */</span>
+    in_port_t      sin_port;   <span style=color:rgba(0,128,0,1)>/* port in network byte order */</span>
+    <span style=color:rgba(0,0,255,1)>struct</span> in_addr sin_addr;   <span style=color:rgba(0,128,0,1)>/* internet address */</span>
+};
+
+<span style=color:rgba(0,128,0,1)>/* Internet address. */</span>
+<span style=color:rgba(0,0,255,1)>struct</span> in_addr {
+    uint32_t       s_addr;     <span style=color:rgba(0,128,0,1)>/* address in network byte order */</span>
+};</pre>
+</div>
+ipv6对应的是： <br>
+<div>
+<pre><span style=color:rgba(0,0,255,1)>struct</span> sockaddr_in6 { 
+    sa_family_t     <span style=color:rgba(0,0,255,1)>sin</span>6_family;   <span style=color:rgba(0,128,0,1)>/* AF_INET6 */</span> 
+    in_port_t       <span style=color:rgba(0,0,255,1)>sin</span>6_port;     <span style=color:rgba(0,128,0,1)>/* port number */</span> 
+    uint32_t        <span style=color:rgba(0,0,255,1)>sin</span>6_flowinfo; <span style=color:rgba(0,128,0,1)>/* IPv6 flow information */</span> 
+    <span style=color:rgba(0,0,255,1)>struct</span> in6_addr <span style=color:rgba(0,0,255,1)>sin</span>6_addr;     <span style=color:rgba(0,128,0,1)>/* IPv6 address */</span> 
+    uint32_t        <span style=color:rgba(0,0,255,1)>sin</span>6_scope_id; <span style=color:rgba(0,128,0,1)>/* Scope ID (new in 2.4) */</span> 
+};
+
+<span style=color:rgba(0,0,255,1)>struct</span> in6_addr { 
+    <span style=color:rgba(0,0,255,1)>unsigned</span> <span style=color:rgba(0,0,255,1)>char</span>   s6_addr[16];   <span style=color:rgba(0,128,0,1)>/* IPv6 address */</span> 
+};</pre>
+</div>
+Unix域对应的是： <br>
+<div>
+<pre>#define UNIX_PATH_MAX    108
+
+<span style=color:rgba(0,0,255,1)>struct</span> sockaddr_un { 
+    sa_family_t sun_family;               <span style=color:rgba(0,128,0,1)>/* AF_UNIX */</span> 
+    <span style=color:rgba(0,0,255,1)>char</span>        sun_path[UNIX_PATH_MAX];  <span style=color:rgba(0,128,0,1)>/* pathname */</span> 
+};</pre>
+</div>
+</li>
+<li>addrlen：对应的是地址的长度。 </li>
+</ul>
+<p>通常服务器在启动的时候都会绑定一个众所周知的地址（如ip地址+端口号），用于提供服务，客户就可以通过它来接连服务器；而客户端就不用指定，有系统自动分配一个端口号和自身的ip地址组合。这就是为什么通常服务器端在listen之前会调用<span color=#d16349 size=2 style=color:rgba(209,99,73,1);font-size:x-small>bind</span>()，而客户端就不会调用，而是在<span color=#d16349 size=2 style=color:rgba(209,99,73,1);font-size:x-small>connect</span>()时由系统随机生成一个。 </p>
+<blockquote>
+<h3>网络字节序与主机字节序</h3>
+<p><strong><span color=#d16349 style=color:rgba(209,99,73,1)>主机字节序</span></strong>就是我们平常说的大端和小端模式：不同的CPU有不同的字节序类型，这些字节序是指整数在内存中保存的顺序，这个叫做主机序。引用标准的Big-Endian和Little-Endian的定义如下： 
+</p>
+<p>　　a) Little-Endian就是低位字节排放在内存的低地址端，高位字节排放在内存的高地址端。 
+</p>
+<p>　　b) Big-Endian就是高位字节排放在内存的低地址端，低位字节排放在内存的高地址端。 
+</p>
+<p><strong><span color=#d16349 style=color:rgba(209,99,73,1)>网络字节序</span></strong>：4个字节的32 bit值以下面的次序传输：首先是0～7bit，其次8～15bit，然后16～23bit，最后是24~31bit。这种传输次序称作大端字节序。<strong>由于TCP/IP首部中所有的二进制整数在网络中传输时都要求以这种次序，因此它又称作网络字节序。</strong>字节序，顾名思义字节的顺序，就是大于一个字节类型的数据在内存中的存放顺序，一个字节的数据没有顺序的问题了。 
+</p>
+<p><span color=#ff0000 size=3 style=color:rgba(255,0,0,1);font-size:small>所以</span>：在将一个地址绑定到socket的时候，请先将主机字节序转换成为网络字节序，而不要假定主机字节序跟网络字节序一样使用的是Big-Endian。由于这个问题曾引发过血案！公司项目代码中由于存在这个问题，导致了很多莫名其妙的问题，所以请谨记对主机字节序不要做任何假定，务必将其转化为网络字节序再赋给socket。</p>
+</blockquote>
+<h2>3.3、listen()、connect()函数</h2>
+<p>如果作为一个服务器，在调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>socket()</span>、<span size=3 style=font-size:small><span color=#d16349 style=color:rgba(209,99,73,1)>bind</span><span color=#d16349 style=color:rgba(209,99,73,1)>()</span></span>之后就会调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>listen()</span>来监听这个socket，如果客户端这时调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>connect()</span>发出连接请求，服务器端就会接收到这个请求。</p>
+<div>
+<pre><span style=color:rgba(0,0,255,1)>int</span> <span color=#f3a447 size=3 style=color:rgba(243,164,71,1);font-size:small>listen</span>(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>int</span> backlog);
+<span style=color:rgba(0,0,255,1)>int</span> <span color=#f3a447 size=3 style=color:rgba(243,164,71,1);font-size:small>connect</span>(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>const</span> <span style=color:rgba(0,0,255,1)>struct</span> sockaddr *addr, socklen_t addrlen);</pre>
+</div>
+<p>listen函数的第一个参数即为要监听的socket描述字，第二个参数为相应socket可以排队的最大连接个数。socket()函数创建的socket默认是一个主动类型的，listen函数将socket变为被动类型的，等待客户的连接请求。</p>
+<p>connect函数的第一个参数即为客户端的socket描述字，第二参数为服务器的socket地址，第三个参数为socket地址的长度。客户端通过调用connect函数来建立与TCP服务器的连接。 </p>
+<h2>3.4、accept()函数</h2>
+<p>TCP服务器端依次调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>socket()</span>、<span size=3 style=font-size:small><span color=#d16349 style=color:rgba(209,99,73,1)>bind</span><span color=#d16349 style=color:rgba(209,99,73,1)>()</span></span>、<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>listen()</span>之后，就会监听指定的socket地址了。TCP客户端依次调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>socket()</span>、<span color=#d16349 style=color:rgba(209,99,73,1)><span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>connect()</span></span>之后就想TCP服务器发送了一个连接请求。TCP服务器监听到这个请求之后，就会调用<span size=2 style=font-size:x-small><span color=#d16349 style=color:rgba(209,99,73,1)>accept</span><span color=#d16349 style=color:rgba(209,99,73,1)>()</span></span>函数取接收请求，这样连接就建立好了。之后就可以开始网络I/O操作了，即类同于普通文件的读写I/O操作。</p>
+<div>
+<pre><span style=color:rgba(0,0,255,1)>int</span> <span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>accept</span>(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>struct</span> sockaddr *addr, socklen_t *addrlen);</pre>
+</div>
+<p>accept函数的第一个参数为服务器的socket描述字，第二个参数为指向<span style=color:rgba(0,0,255,1)>struct</span> sockaddr *的指针，用于返回客户端的协议地址，第三个参数为协议地址的长度。如果accpet成功，那么其返回值是由内核自动生成的一个全新的描述字，代表与返回客户的TCP连接。</p>
+<p><span color=#ff0000 size=2 style=color:rgba(255,0,0,1);font-size:x-small>注意</span>：accept的第一个参数为服务器的socket描述字，是服务器开始调用socket()函数生成的，称为<span color=#d16349 size=2 style=color:rgba(209,99,73,1);font-size:x-small>监听socket描述字</span>；而accept函数返回的是<span color=#d16349 size=2 style=color:rgba(209,99,73,1);font-size:x-small>已连接的socket描述字</span>。一个服务器通常通常仅仅只创建一个监听socket描述字，它在该服务器的生命周期内一直存在。内核为每个由服务器进程接受的客户连接创建了一个已连接socket描述字，当服务器完成了对某个客户的服务，相应的已连接socket描述字就被关闭。</p>
+<h2>3.5、read()、write()等函数</h2>
+<p>万事具备只欠东风，至此服务器与客户已经建立好连接了。可以调用网络I/O进行读写操作了，即实现了网咯中不同进程之间的通信！网络I/O操作有下面几组：</p>
+<ul>
+<li>read()/write() 
+</li>
+<li>recv()/send() 
+</li>
+<li>readv()/writev() 
+</li>
+<li><span color=#ff0000 size=3 style=color:rgba(255,0,0,1);font-size:small>recvmsg()/sendmsg()</span> 
+</li>
+<li>recvfrom()/sendto()</li>
+</ul>
+<p>我推荐使用<span color=#ff0000 size=3 style=color:rgba(255,0,0,1);font-size:small>recvmsg()/sendmsg()</span>函数，这两个函数是最通用的I/O函数，实际上可以把上面的其它函数都替换成这两个函数。它们的声明如下：</p>
+<div>
+<pre>       #include &lt;unistd.h&gt;
+
+       ssize_t <span style=color:rgba(0,0,255,1)>read</span>(<span style=color:rgba(0,0,255,1)>int</span> fd, <span style=color:rgba(0,0,255,1)>void</span> *buf, size_t count);
+       ssize_t <span style=color:rgba(0,0,255,1)>write</span>(<span style=color:rgba(0,0,255,1)>int</span> fd, <span style=color:rgba(0,0,255,1)>const</span> <span style=color:rgba(0,0,255,1)>void</span> *buf, size_t count);
+
+       #include &lt;sys/types.h&gt;
+       #include &lt;sys/socket.h&gt;
+
+       ssize_t send(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>const</span> <span style=color:rgba(0,0,255,1)>void</span> *buf, size_t len, <span style=color:rgba(0,0,255,1)>int</span> flags);
+       ssize_t recv(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>void</span> *buf, size_t len, <span style=color:rgba(0,0,255,1)>int</span> flags);
+
+       ssize_t sendto(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>const</span> <span style=color:rgba(0,0,255,1)>void</span> *buf, size_t len, <span style=color:rgba(0,0,255,1)>int</span> flags,
+                      <span style=color:rgba(0,0,255,1)>const</span> <span style=color:rgba(0,0,255,1)>struct</span> sockaddr *dest_addr, socklen_t addrlen);
+       ssize_t recvfrom(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>void</span> *buf, size_t len, <span style=color:rgba(0,0,255,1)>int</span> flags,
+                        <span style=color:rgba(0,0,255,1)>struct</span> sockaddr *src_addr, socklen_t *addrlen);
+
+       ssize_t sendmsg(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>const</span> <span style=color:rgba(0,0,255,1)>struct</span> msghdr *msg, <span style=color:rgba(0,0,255,1)>int</span> flags);
+       ssize_t recvmsg(<span style=color:rgba(0,0,255,1)>int</span> sockfd, <span style=color:rgba(0,0,255,1)>struct</span> msghdr *msg, <span style=color:rgba(0,0,255,1)>int</span> flags);
+</pre>
+</div>
+<p>read函数是负责从fd中读取内容.当读成功时，read返回实际所读的字节数，如果返回的值是0表示已经读到文件的结束了，小于0表示出现了错误。如果错误为EINTR说明读是由中断引起的，如果是ECONNREST表示网络连接出了问题。 </p>
+<p>write函数将buf中的nbytes字节内容写入文件描述符fd.成功时返回写的字节数。失败时返回-1，并设置errno变量。 在网络程序中，当我们向套接字文件描述符写时有俩种可能。1)write的返回值大于0，表示写了部分或者是全部的数据。2)返回的值小于0，此时出现了错误。我们要根据错误类型来处理。如果错误为EINTR表示在写的时候出现了中断错误。如果为EPIPE表示网络连接出现了问题(对方已经关闭了连接)。
+</p>
+<p>其它的我就不一一介绍这几对I/O函数了，具体参见man文档或者baidu、Google，下面的例子中将使用到send/recv。</p>
+<h2>3.6、close()函数</h2>
+<p>在服务器与客户端建立连接之后，会进行一些读写操作，完成了读写操作就要关闭相应的socket描述字，好比操作完打开的文件要调用fclose关闭打开的文件。</p>
+<div>
+<pre>#include &lt;unistd.h&gt;
+<span style=color:rgba(0,0,255,1)>int</span> <span style=color:rgba(0,0,255,1)><span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>close</span></span>(<span style=color:rgba(0,0,255,1)>int</span> fd);</pre>
+</div>
+<p>close一个TCP socket的缺省行为时把该socket标记为以关闭，然后立即返回到调用进程。该描述字不能再由调用进程使用，也就是说不能再作为read或write的第一个参数。</p>
+<p>注意：close操作只是使相应socket描述字的引用计数-1，只有当引用计数为0的时候，才会触发TCP客户端向服务器发送终止连接请求。</p>
+<h1>4、socket中TCP的三次握手建立连接详解</h1>
+<p>我们知道tcp建立连接要进行“三次握手”，即交换三个分组。大致流程如下：</p>
+<ul>
+<li>客户端向服务器发送一个SYN J 
+</li>
+<li>服务器向客户端响应一个SYN K，并对SYN J进行确认ACK J+1 
+</li>
+<li>客户端再想服务器发一个确认ACK K+1 </li>
+</ul>
+<p>只有就完了三次握手，但是这个三次握手发生在socket的那几个函数中呢？请看下图：</p>
+<p><a href=http://images.cnblogs.com/cnblogs_com/skynet/201012/201012122157467258.png><img style=background-image:none;padding-left:0;padding-right:0;display:block;float:none;margin-left:auto;margin-right:auto;padding-top:0;border-width:0 title=image alt=image src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbQAAADlCAYAAAA7kQKgAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAADXESURBVHhe7Z1v7G1Vmd9/7/tiXjdN+qahSV80gYQoidT4ry+aNhpa0yamE5teAi2jCHqFC+L4B68VHLXRWxgcwDgXhKjEucaxVoULkViRC2r4U4heM9DAkHGsE2+AQU12z+dcvviw7v6z9v7tffZe53x3cu495+y111r7u9bZn9+z1rOetffQQw9VflkD9wH3AfcB94HS+sD3vve96oUXXqheeuml6re//W21xw34sAJWwApYAStQmgJf/vKXq5/97GfVc889V506dcpAK60BXV8rYAWsgBU4rcD1119f3XPPPdUjjzyyhpotNPcMK2AFrIAVKFKBSy65pLr11luru+++u/r5z39uoBXZiq60FbACVsAKVG9961ura6+9tmLo8dFHHzXQ3CesgBWwAlagTAVe97rXVZdddtnaSjtx4oSBVmYzutZWwApYAStwzjnnVBdffHF14403Vg888ICB5i5hBayAFbACZSpw9tlnVxdddFF1ww03GGhlNqFrbQXyFPjmt++vvnrsO35lanDf/SfyhHWqxShw7rnnVjiG3HTTTdUPf/hDW2iLaRlXxAqMqMDf/OL/VQcuubK6/RPn+5Whwc0fe0t16fs+OGILOKtNKHDeeedVl156aXXzzTd7Dq1J8Acffqx6x4FDfjVo8M6LD1U/PfnUJvqryxioAEC79PL3V393155fGRqcPPoHBtrAvjbnZTiFXH755WunEIKEeB1aTWswTMNftn4Y1D8MP3ftf6g8PDPnz7i7bAOtH8gNtO4+tcQUBlpGqxho7Q8DAy2jE82cxEAz0Gbughsp3kDLkNlAM9AyusmikxhoBtqiO+hIlTPQMoQ00Ay0jG6y6CQGmoG26A46UuUMtAwhDTQDLaObLDrJ0oB203v6AWbT89eeQ1t0d26snIGW0W4GmoGW0U0WnWQI0O44tFed+Nzv2/7e6/cqgeiD79irnrj51f3imdv3qj98czeovvHRveqf/MO9iv9TUKV51oGMevGiPrx4/8kLT+dFHXivc/z/7rd11yktx0BbdHc20PbTPJsAGg+Of/Pa0z/O/f41qrxyHg77LYvr7RSy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" width=436 height=229 border=0></a></p>
+<p align=center>图1、socket中发送的TCP三次握手</p>
+<p align=left>从图中可以看出，当客户端调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>connect</span>时，触发了连接请求，向服务器发送了SYN J包，这时connect进入阻塞状态；服务器监听到连接请求，即收到SYN J包，调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>accept</span>函数接收请求向客户端发送SYN K ，ACK J+1，这时accept进入阻塞状态；客户端收到服务器的SYN K ，ACK J+1之后，这时connect返回，并对SYN K进行确认；服务器收到ACK K+1时，accept返回，至此三次握手完毕，连接建立。</p>
+<blockquote>
+<p align=left>总结：客户端的connect在三次握手的第二个次返回，而服务器端的accept在三次握手的第三次返回。</p>
+</blockquote>
+<h1>5、socket中TCP的四次握手释放连接详解</h1>
+<p>上面介绍了socket中TCP的三次握手建立过程，及其涉及的socket函数。现在我们介绍socket中的四次握手释放连接的过程，请看下图：</p>
+<p><a href=http://images.cnblogs.com/cnblogs_com/skynet/201012/201012122157487616.png><img style=background-image:none;padding-left:0;padding-right:0;display:block;float:none;margin-left:auto;margin-right:auto;padding-top:0;border-width:0 title=image alt=image src="data:image/png;base64,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" width=366 height=229 border=0></a></p>
+<p align=center>图2、socket中发送的TCP四次握手</p>
+<p align=left>图示过程如下：</p>
+<ul>
+<li>
+<div align=left>某个应用进程首先调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>close</span>主动关闭连接，这时TCP发送一个FIN M；</div>
+</li>
+<li>
+<div align=left>另一端接收到FIN M之后，执行被动关闭，对这个FIN进行确认。它的接收也作为文件结束符传递给应用进程，因为FIN的接收意味着应用进程在相应的连接上再也接收不到额外数据；</div>
+</li>
+<li>
+<div align=left>一段时间之后，接收到文件结束符的应用进程调用<span color=#d16349 size=3 style=color:rgba(209,99,73,1);font-size:small>close</span>关闭它的socket。这导致它的TCP也发送一个FIN N；</div>
+</li>
+<li>
+<div align=left>接收到这个FIN的源发送端TCP对它进行确认。</div>
+</li>
+</ul>
+<p align=left>这样每个方向上都有一个FIN和ACK。</p>
+<h1 align=left>6、一个例子（实践一下）</h1>
+<p>说了这么多了，动手实践一下。下面编写一个简单的服务器、客户端（使用TCP）——服务器端一直监听本机的6666号端口，如果收到连接请求，将接收请求并接收客户端发来的消息；客户端与服务器端建立连接并发送一条消息。</p>
+<p>服务器端代码：</p>
+<div class=cnblogs_code><img src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="11" height="16"><rect fill-opacity="0"/></svg>' class=code_img_closed id=code_img_closed_420160b6-a157-40d3-98f4-f55288ca1293 style="background-blend-mode:normal!important;background-clip:content-box!important;background-position:50% 50%!important;background-color:rgba(0,0,0,0)!important;background-image:var(--sf-img-25)!important;background-size:100% 100%!important;background-origin:content-box!important;background-repeat:no-repeat!important"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class=code_img_opened id=code_img_opened_420160b6-a157-40d3-98f4-f55288ca1293 style=display:none><span class=cnblogs_code_collapse>服务器端</span>
+<div id=cnblogs_code_open_420160b6-a157-40d3-98f4-f55288ca1293 class="cnblogs_code_hide sf-hidden">
+</div>
+</div>
+<p>客户端代码：</p>
+<div class=cnblogs_code><img src='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="11" height="16"><rect fill-opacity="0"/></svg>' class=code_img_closed id=code_img_closed_a1802b54-e3cd-46e7-b4e5-04efb8c233d2 style="background-blend-mode:normal!important;background-clip:content-box!important;background-position:50% 50%!important;background-color:rgba(0,0,0,0)!important;background-image:var(--sf-img-25)!important;background-size:100% 100%!important;background-origin:content-box!important;background-repeat:no-repeat!important"><img src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" class=code_img_opened id=code_img_opened_a1802b54-e3cd-46e7-b4e5-04efb8c233d2 style=display:none><span class=cnblogs_code_collapse>客户端</span>
+<div id=cnblogs_code_open_a1802b54-e3cd-46e7-b4e5-04efb8c233d2 class="cnblogs_code_hide sf-hidden">
+</div>
+</div>
+<p>当然上面的代码很简单，也有很多缺点，这就只是简单的演示socket的基本函数使用。其实不管有多复杂的网络程序，都使用的这些基本函数。上面的服务器使用的是迭代模式的，即只有处理完一个客户端请求才会去处理下一个客户端的请求，这样的服务器处理能力是很弱的，现实中的服务器都需要有并发处理能力！为了需要并发处理，服务器需要fork()一个新的进程或者线程去处理请求等。 </p>
+<h1>7、动动手</h1>
+<p>留下一个问题，欢迎大家回帖回答！！！是否熟悉Linux下网络编程？如熟悉，编写如下程序完成如下功能：</p>
+<p>服务器端：
+</p>
+<p>接收地址192.168.100.2的客户端信息，<a name=OLE_LINK3></a>如信息为“Client Query”，则打印“Receive Query”
+</p>
+<p>客户端：
+</p>
+<p>向地址192.168.100.168的服务器端顺序发送信息“Client Query test”，“Cleint Query”，“Client Query Quit”，然后退出。
+</p>
+<p>题目中出现的ip地址可以根据实际情况定。
+</p>
+<p align=right>——本文只是介绍了简单的socket编程。
+</p>
+<p align=right>更为复杂的需要自己继续深入。
+</p>
+<h4 align=justify><a href=http://www.cnblogs.com/skynet/archive/2010/12/04/1881236.html>（unix domain socket）使用udp发送&gt;=128K的消息会报ENOBUFS的错误</a>（一个实际socket编程中遇到的问题，希望对你有帮助）</h4>
+</div>
+<div id=MySignature style=display:block><p><br>
+</p>
+<div id=SkynetSignature>
+<div><a href=http://www.cnblogs.com/skynet/ target=_blank></a></div>
+<p>作者：吴秦<br>
+出处：http://www.cnblogs.com/skynet/<br>
+本文基于<a target=_blank href=http://creativecommons.org/licenses/by/2.5/cn/>署名 2.5 中国大陆</a>许可协议发布，欢迎转载，演绎或用于商业目的，但是必须保留本文的署名<a href=http://www.cnblogs.com/skynet/ target=_blank>吴秦</a>（包含链接）.</p>
+</div>
+</div>
+<div class=clear></div>
+<div id=blog_post_info_block>
+ <div id=blog_post_info>
+<div id=green_channel>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html id=green_channel_digg>好文要顶</a>
+ <a id=green_channel_follow href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>关注我</a>
+ <a id=green_channel_favorite href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>收藏该文</a>
+ <a id=green_channel_weibo href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html title=分享至新浪微博><img src=data:image/png;base64,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 alt></a>
+ <a id=green_channel_wechat href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html title=分享至微信><img src=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAAXNSR0IArs4c6QAAAAlwSFlzAAALEwAACxMBAJqcGAAABA9pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IlhNUCBDb3JlIDUuNC4wIj4KICAgPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4KICAgICAgPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIKICAgICAgICAgICAgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iCiAgICAgICAgICAgIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIgogICAgICAgICAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgICAgICAgICAgIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIj4KICAgICAgICAgPHhtcE1NOkRlcml2ZWRGcm9tIHJkZjpwYXJzZVR5cGU9IlJlc291cmNlIj4KICAgICAgICAgICAgPHN0UmVmOmluc3RhbmNlSUQ+eG1wLmlpZDo0RUREMkQ4M0Q4REUxMUUzQkU2QUFFRDI0NThBOTQxQTwvc3RSZWY6aW5zdGFuY2VJRD4KICAgICAgICAgICAgPHN0UmVmOmRvY3VtZW50SUQ+eG1wLmRpZDo0RUREMkQ4NEQ4REUxMUUzQkU2QUFFRDI0NThBOTQxQTwvc3RSZWY6ZG9jdW1lbnRJRD4KICAgICAgICAgPC94bXBNTTpEZXJpdmVkRnJvbT4KICAgICAgICAgPHhtcE1NOkRvY3VtZW50SUQ+eG1wLmRpZDo0RUREMkQ4NkQ4REUxMUUzQkU2QUFFRDI0NThBOTQxQTwveG1wTU06RG9jdW1lbnRJRD4KICAgICAgICAgPHhtcE1NOkluc3RhbmNlSUQ+eG1wLmlpZDo0RUREMkQ4NUQ4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 alt></a>
+</div>
+<div id=author_profile>
+ <div id=author_profile_info class=author_profile_info>
+ <a href=https://home.cnblogs.com/u/skynet/ target=_blank><img src="data:image/jpeg;base64,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" class=author_avatar alt></a>
+ <div id=author_profile_detail class=author_profile_info>
+ <a href=https://home.cnblogs.com/u/skynet/>吴秦</a><br>
+ <a href=https://home.cnblogs.com/u/skynet/followees/>关注 - 18</a><br>
+ <a href=https://home.cnblogs.com/u/skynet/followers/>粉丝 - 3928</a>
+ </div>
+ </div>
+ <div class=clear></div>
+ <div id=author_profile_honor>推荐博客</div>
+ <div id=author_profile_follow>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>+加关注</a>
+ </div>
+</div>
+<div id=div_digg>
+ <div class=diggit>
+ <span class=diggnum id=digg_count>156</span>
+ </div>
+ <div class=buryit>
+ <span class=burynum id=bury_count>0</span>
+ </div>
+ <div class=clear></div>
+ <div class=diggword id=digg_tips>
+ </div>
+</div>
+</div>
+ <div class=clear></div>
+ <div id=post_next_prev>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/11/1903347.html class=p_n_p_prefix>« </a> 上一篇： <a href=https://www.cnblogs.com/skynet/archive/2010/12/11/1903347.html title="发布于 2010-12-11 18:44">HTTP Keep-Alive模式</a>
+ <br>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/25/1916873.html class=p_n_p_prefix>» </a> 下一篇： <a href=https://www.cnblogs.com/skynet/archive/2010/12/25/1916873.html title="发布于 2010-12-25 19:48">【日常小记】linux中强大且常用命令：find、grep</a>
+</div>
+</div>
+ <div class=clear></div>
+ <div id=blog_post_info_block>
+ <div id=blog_post_info>
+ </div>
+ <div class=clear></div>
+ <div id=post_next_prev></div>
+ </div>
+</div>
+ <ul class=postmetadata>
+ 
+<li class=icon_cat id=BlogPostCategory>
+分类 <a href=https://www.cnblogs.com/skynet/category/248264.html target=_blank>C/C++ Internals</a>
+, <a href=https://www.cnblogs.com/skynet/category/248267.html target=_blank>Unix/Linux下编程</a>
+</li>
+<li class=icon_bullet id=EntryTag>
+&nbsp;</li>
+ </ul>
+</div>
+<a name=!comments></a>
+<div id=blog-comments-placeholder>
+<div id=comment_pager_top>
+ 
+ <div class=pager>
+ 
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html#!comments>
+ &lt; Prev
+ </a>
+ 
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html#!comments>
+ 1
+ </a>
+ 
+ 
+ 
+ <span class=current>2</span>
+ 
+ 
+ 
+ 
+ 
+ 
+ </div>
+</div>
+<a class=addcomment href=#comment_tip>Add your comment</a>
+<h3 id=comments></h3>
+<div class=feedbackNoItems></div>
+<ol class=commentlist id=commentList>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#2975384 class=layer>#51楼</a>
+<a name=2975384 id=comment_anchor_2975384></a>
+ </cite> 
+ <a id=a_comment_author_2975384 href=https://home.cnblogs.com/u/574777/ target=_blank>u011603302</a>
+ <small>
+ 
+<span class=comment_date>2014-07-01 19:11</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_2975384 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ socket base, mark
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#2995701 class=layer>#52楼</a>
+<a name=2995701 id=comment_anchor_2995701></a>
+ </cite> 
+ <a id=a_comment_author_2995701 href=https://home.cnblogs.com/u/637045/ target=_blank>sjtufighter</a>
+ <small>
+ 
+<span class=comment_date>2014-07-28 10:43</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_2995701 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 非常精彩，谢谢分享
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3040607 class=layer>#53楼</a>
+<a name=3040607 id=comment_anchor_3040607></a>
+ </cite> 
+ <a id=a_comment_author_3040607 href=https://www.cnblogs.com/hg_tuyn/ target=_blank>涂老</a>
+ <small>
+ 
+<span class=comment_date>2014-10-09 15:22</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3040607 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ if( connect(sockfd, (struct sockaddr*)&amp;servaddr, sizeof(servaddr)) &lt; 0)这里始终是-1<br>代码只改了:<br>char IPdotdec[20]; //存放十进制的IP地址<br>printf("please input ip address");<br>scanf("%s",IPdotdec);<br>inet_pton(AF_INET,IPdotdec,&amp;servaddr.sin_addr)&lt;=0,这一步没有问题,是在xcode5中运行的，始终连不上服务端
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3040610 class=layer>#54楼</a>
+<a name=3040610 id=comment_anchor_3040610></a>
+ </cite> 
+ <a id=a_comment_author_3040610 href=https://www.cnblogs.com/hg_tuyn/ target=_blank>涂老</a>
+ <small>
+ 
+<span class=comment_date>2014-10-09 15:24</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3040610 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 这个sizeof(servaddr)是16
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3071761 class=layer>#55楼</a>
+<a name=3071761 id=comment_anchor_3071761></a>
+ </cite> 
+ <a id=a_comment_author_3071761 href=https://home.cnblogs.com/u/696897/ target=_blank>zzf-bingo</a>
+ <small>
+ 
+<span class=comment_date>2014-11-26 09:50</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3071761 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 很好的一篇文章！不过，我找了一下，没有找到你说的后续会单独开篇的socket()中的protocol字段的单独说明啊？（话说，为了回复你，我专门注册了博客园账号。。。）
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(3)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(1)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3116751 class=layer>#56楼</a>
+<a name=3116751 id=comment_anchor_3116751></a>
+ </cite> 
+ <a id=a_comment_author_3116751 href=https://home.cnblogs.com/u/718591/ target=_blank>jueying_8888</a>
+ <small>
+ 
+<span class=comment_date>2015-01-28 08:50</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3116751 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 好文章，mark
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3132472 class=layer>#57楼</a>
+<a name=3132472 id=comment_anchor_3132472></a>
+ </cite> 
+ <a id=a_comment_author_3132472 href=https://www.cnblogs.com/wghost/ target=_blank>没出没</a>
+ <small>
+ 
+<span class=comment_date>2015-02-27 16:27</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3132472 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 请教一下，如果我想重启server端，但是整个过程中保持socket不被关闭，也就是仍然可以接收client的请求，只是将其缓存，待server重启成功后继续处理，该怎么办？？
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3132472_avatar style=display:none>
+ https://pic.cnblogs.com/face/u303875.gif?id=26210113
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3132476 class=layer>#58楼</a>
+<a name=3132476 id=comment_anchor_3132476></a>
+[<span class=louzhu>楼主</span>]
+ </cite> 
+ <a id=a_comment_author_3132476 href=https://www.cnblogs.com/skynet/ target=_blank>吴秦</a>
+ <small>
+ 
+<span class=comment_date>2015-02-27 16:30</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3132476 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ <a href=#3132472 title=查看所回复的评论>@</a>
+没出没<br><fieldset class=comment_quote><legend><a href=#3132472 title=查看引用原文>引用</a></legend>请教一下，如果我想重启server端，但是整个过程中保持socket不被关闭，也就是仍然可以接收client的请求，只是将其缓存，待server重启成功后继续处理，该怎么办？？</fieldset><br>可以参考“nginx平滑重启与平滑升级”的做法
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3132476_avatar style=display:none>
+ https://pic.cnblogs.com/face/u92071.jpg
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3161976 class=layer>#59楼</a>
+<a name=3161976 id=comment_anchor_3161976></a>
+ </cite> 
+ <a id=a_comment_author_3161976 href=https://home.cnblogs.com/u/744238/ target=_blank>roger9567</a>
+ <small>
+ 
+<span class=comment_date>2015-04-14 00:30</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3161976 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ nice!
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3199414 class=layer>#60楼</a>
+<a name=3199414 id=comment_anchor_3199414></a>
+ </cite> 
+ <a id=a_comment_author_3199414 href=https://home.cnblogs.com/u/327266/ target=_blank>乐安居</a>
+ <small>
+ 
+<span class=comment_date>2015-06-03 15:44</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3199414 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 真的写的不错。以前“几次握手”只是有个概念，这图片解释的很详细！
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3204837 class=layer>#61楼</a>
+<a name=3204837 id=comment_anchor_3204837></a>
+ </cite> 
+ <a id=a_comment_author_3204837 href=https://www.cnblogs.com/gattaca/ target=_blank>Sawyer Ford</a>
+ <small>
+ 
+<span class=comment_date>2015-06-09 21:18</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3204837 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 讲解的很好
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3204837_avatar style=display:none>
+ https://pic.cnblogs.com/face/565026/20141119212220.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3212595 class=layer>#62楼</a>
+<a name=3212595 id=comment_anchor_3212595></a>
+ </cite> 
+ <a id=a_comment_author_3212595 href=https://home.cnblogs.com/u/94164/ target=_blank>myg</a>
+ <small>
+ 
+<span class=comment_date>2015-06-21 17:25</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3212595 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 楼主 ：<br>服务器监听到连接请求，即收到SYN J包，调用accept函数接收请求向客户端发送SYN K ，ACK J+1，这时accept进入阻塞状态；这句话有问题！！<br>服务端不调用accept函数 ，也照样会向客户端发送SYN+ACK报文！！！
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3234212 class=layer>#63楼</a>
+<a name=3234212 id=comment_anchor_3234212></a>
+ </cite> 
+ <a id=a_comment_author_3234212 href=https://home.cnblogs.com/u/568160/ target=_blank>无他唯手熟尔</a>
+ <small>
+ 
+<span class=comment_date>2015-07-23 22:22</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3234212 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 先感谢楼主的干货，我觉得我还得在看一次。
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3308108 class=layer>#64楼</a>
+<a name=3308108 id=comment_anchor_3308108></a>
+ </cite> 
+ <a id=a_comment_author_3308108 href=https://home.cnblogs.com/u/837053/ target=_blank>岁月山庄</a>
+ <small>
+ 
+<span class=comment_date>2015-11-17 11:07</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3308108 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 楼主你好，“服务器监听到连接请求，即收到SYN J包，调用accept函数接收请求向客户端发送SYN K ，ACK J+1，这时accept进入阻塞状态”这一句感觉有问题，服务器向客户端发送SYN K,ACK J+1，不需要调用accept函数，调用accept作用只是已建立连接的tcp队列中取出一个。
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3335971 class=layer>#65楼</a>
+<a name=3335971 id=comment_anchor_3335971></a>
+ </cite> 
+ <a id=a_comment_author_3335971 href=https://www.cnblogs.com/wulaoer/ target=_blank>吴老二</a>
+ <small>
+ 
+<span class=comment_date>2015-12-28 10:40</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3335971 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 好文章
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3335971_avatar style=display:none>
+ https://pic.cnblogs.com/face/828194/20151027113020.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3411859 class=layer>#66楼</a>
+<a name=3411859 id=comment_anchor_3411859></a>
+ </cite> 
+ <a id=a_comment_author_3411859 href=https://home.cnblogs.com/u/939725/ target=_blank>Tomasmule</a>
+ <small>
+ 
+<span class=comment_date>2016-04-19 11:58</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3411859 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 刚开通博客园，已粉
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3670069 class=layer>#67楼</a>
+<a name=3670069 id=comment_anchor_3670069></a>
+ </cite> 
+ <a id=a_comment_author_3670069 href=https://www.cnblogs.com/shaoting/ target=_blank>程序猿--少停</a>
+ <small>
+ 
+<span class=comment_date>2017-04-17 14:03</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3670069 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 赞一下
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3670069_avatar style=display:none>
+ https://pic.cnblogs.com/face/781239/20170930105542.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3717364 class=layer>#68楼</a>
+<a name=3717364 id=comment_anchor_3717364></a>
+ </cite> 
+ <a id=a_comment_author_3717364 href=https://www.cnblogs.com/lxjtin/ target=_blank>无畏者无惧</a>
+ <small>
+ 
+<span class=comment_date>2017-06-19 11:51</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3717364 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 不错，赞一个
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3717364_avatar style=display:none>
+ https://pic.cnblogs.com/face/726451/20150302175807.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3742406 class=layer>#69楼</a>
+<a name=3742406 id=comment_anchor_3742406></a>
+ </cite> 
+ <a id=a_comment_author_3742406 href=https://home.cnblogs.com/u/1057838/ target=_blank>Apprentice_saber</a>
+ <small>
+ 
+<span class=comment_date>2017-07-24 19:19</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3742406 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 多谢楼主的干货。赞一个！！！
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3781214 class=layer>#70楼</a>
+<a name=3781214 id=comment_anchor_3781214></a>
+ </cite> 
+ <a id=a_comment_author_3781214 href=https://www.cnblogs.com/jdzhang/ target=_blank>快跑啊兔兔</a>
+ <small>
+ 
+<span class=comment_date>2017-09-11 18:04</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3781214 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 很精彩，感谢。
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3781214_avatar style=display:none>
+ https://pic.cnblogs.com/face/990360/20170523180602.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3858699 class=layer>#71楼</a>
+<a name=3858699 id=comment_anchor_3858699></a>
+ </cite> 
+ <a id=a_comment_author_3858699 href=https://www.cnblogs.com/KRCheung/ target=_blank>KRCheung</a>
+ <small>
+ 
+<span class=comment_date>2017-12-05 21:57</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3858699 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 难得楼主有心整理！感谢！
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3858699_avatar style=display:none>
+ https://pic.cnblogs.com/face/1066524/20170227130418.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3858922 class=layer>#72楼</a>
+<a name=3858922 id=comment_anchor_3858922></a>
+ </cite> 
+ <a id=a_comment_author_3858922 href=https://home.cnblogs.com/u/1278921/ target=_blank>笔耕不辍</a>
+ <small>
+ 
+<span class=comment_date>2017-12-06 10:34</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3858922 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 真的是很赞。。markmark。。
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3861690 class=layer>#73楼</a>
+<a name=3861690 id=comment_anchor_3861690></a>
+ </cite> 
+ <a id=a_comment_author_3861690 href=https://www.cnblogs.com/cjm123/ target=_blank>~雨落忧伤~</a>
+ <small>
+ 
+<span class=comment_date>2017-12-09 13:54</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3861690 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 非常好
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3861690_avatar style=display:none>
+ https://pic.cnblogs.com/face/856389/20171120165836.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#3977851 class=layer>#74楼</a>
+<a name=3977851 id=comment_anchor_3977851></a>
+ </cite> 
+ <a id=a_comment_author_3977851 href=https://www.cnblogs.com/DillGao/ target=_blank>DillGao</a>
+ <small>
+ 
+<span class=comment_date>2018-05-19 15:10</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_3977851 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 好文，尤其最后对 tcp 三次握手和 4次断开的讲解，以前以为是网络层的内容，自动处理的，没想到应用层也参与其中，学习啦
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_3977851_avatar style=display:none>
+ https://pic.cnblogs.com/face/1088429/20170215152123.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#4170965 class=layer>#75楼</a>
+<a name=4170965 id=comment_anchor_4170965></a>
+ </cite> 
+ <a id=a_comment_author_4170965 href=https://www.cnblogs.com/monster17/ target=_blank>前行丶</a>
+ <small>
+ 
+<span class=comment_date>2019-01-25 10:41</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_4170965 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ mark
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_4170965_avatar style=display:none>
+ https://pic.cnblogs.com/face/1317137/20180527121254.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#4251778 class=layer>#76楼</a>
+<a name=4251778 id=comment_anchor_4251778></a>
+ </cite> 
+ <a id=a_comment_author_4251778 href=https://home.cnblogs.com/u/891460/ target=_blank>jsohpill</a>
+ <small>
+ 
+<span class=comment_date>2019-05-09 15:22</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_4251778 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 对socket不熟悉的人非常友好
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#4330332 class=layer>#77楼</a>
+<a name=4330332 id=comment_anchor_4330332></a>
+ </cite> 
+ <a id=a_comment_author_4330332 href=https://home.cnblogs.com/u/1557354/ target=_blank>小天的程序生活</a>
+ <small>
+ 
+<span class=comment_date>2019-08-19 10:23</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_4330332 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ Hi 博主。我想学套接字编程，有书籍推荐吗？入门最好
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#4403171 class=layer>#78楼</a>
+<a name=4403171 id=comment_anchor_4403171></a>
+ </cite> 
+ <a id=a_comment_author_4403171 href=https://www.cnblogs.com/Johnson13/ target=_blank>蚌蚌头</a>
+ <small>
+ 
+<span class=comment_date>2019-10-24 21:49</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_4403171 data-format-type=Ubb class="blog_comment_body cnblogs-ubb">
+ 写得很棒，学习了~~
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ 
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#4568214 class=layer>#79楼</a>
+<a name=4568214 id=comment_anchor_4568214></a>
+ </cite> 
+ <a id=a_comment_author_4568214 href=https://www.cnblogs.com/zphdxnm/ target=_blank>XiaoNingMeng</a>
+ <small>
+ 
+<span class=comment_date>2020-05-05 16:28</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_4568214 data-format-type=Markdown class="blog_comment_body cnblogs-markdown">
+ <p><a href=#3132472 title=查看所回复的评论>@</a>没出没<br>
+也许可以选择备用服务器，像百度、阿里这样的大公司，都是有备用服务器，要么主服务器死掉，很多用户都会崩的。</p>
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_4568214_avatar style=display:none>
+ https://pic.cnblogs.com/face/1961447/20200430171049.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+ <li class=alt>
+ <h5>
+ <cite>
+ 
+<a href=#4568219 class=layer>#80楼</a>
+<a name=4568219 id=comment_anchor_4568219></a>
+ <span id=comment-maxId style=display:none>4568219</span>
+ <span id=comment-maxDate style=display:none>2020/5/5 下午4:32:58</span>
+ </cite> 
+ <a id=a_comment_author_4568219 href=https://www.cnblogs.com/zphdxnm/ target=_blank>XiaoNingMeng</a>
+ <small>
+ 
+<span class=comment_date>2020-05-05 16:32</span>
+ </small>
+ </h5>
+ 
+<div id=comment_body_4568219 data-format-type=Markdown class="blog_comment_body cnblogs-markdown">
+ <p><a href=#3212595 title=查看所回复的评论>@</a>myg<br>
+请问accept()函数应该是一直处于阻塞状态吗？只有连接建立完毕之后才会返回通信套接字嘛？</p>
+</div>
+ <div class=comment_vote>
+ <span class=comment_error style=color:red></span>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_digg>
+ 支持(0)
+ </a>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=comment_burry>
+ 反对(0)
+ </a>
+ </div>
+ <span id=comment_4568219_avatar style=display:none>
+ https://pic.cnblogs.com/face/1961447/20200430171049.png
+ </span>
+ <div class=opt_comment>
+ 
+<span class=comment_actions>
+ 
+ 
+ 
+ 
+</span>
+ </div>
+ </li>
+</ol>
+<div id=comment_pager_bottom>
+ 
+ <div class=pager>
+ 
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html#!comments>
+ &lt; Prev
+ </a>
+ 
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html#!comments>
+ 1
+ </a>
+ 
+ 
+ 
+ <span class=current>2</span>
+ 
+ 
+ 
+ 
+ 
+ 
+ </div>
+</div>
+</div>
+<div id=comment_form class=commentform>
+ <a name=commentform></a>
+ <div id=divCommentShow></div>
+ <div id=comment_nav><span id=span_refresh_tips></span><a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html id=lnk_RefreshComments runat=server clientidmode=Static>刷新评论</a><a href=#>刷新页面</a><a href=#top>返回顶部</a></div>
+ <div id=comment_form_container style=visibility:visible><div class=login_tips>
+ 登录后才能发表评论，立即 <a rel=nofollow href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=underline>登录</a> 或
+ <a rel=nofollow href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html class=underline>注册</a>，
+ <a href=https://www.cnblogs.com/>访问</a> 网站首页
+</div>
+<div class=under-comment-nav>
+ <a href="https://brands.cnblogs.com/aws/free?source=blog_under_login_tip" target=_blank>博客园派送云上免费午餐，AWS注册立享12个月免费套餐</a>
+</div></div>
+ <div class=ad_text_commentbox id=ad_text_under_commentbox></div>
+ <div id=ad_t2><a href=http://www.softbam.com/index.htm target=_blank>【推荐】News: 大型组态、工控、仿真、CADGIS 50万行VC++源码免费下载</a><br><a href=http://click.aliyun.com/m/1000196436/ target=_blank>【推荐】阿里云钜惠返场，奖励继续赢5万现金，错过再等一年</a><br><a href=https://brands.cnblogs.com/huawei target=_blank>【推荐】了不起的开发者，挡不住的华为，园子里的品牌专区</a><br><a href=https://brands.cnblogs.com/agora target=_blank>【推荐】未知数的距离，毫秒间的传递，声网与你实时互动</a><br><a href="https://brands.cnblogs.com/aws/free?source=CH" target=_blank>【福利】AWS携手博客园为开发者送免费套餐与抵扣券</a><br></div>
+ <div id=opt_under_post></div>
+ <div id=cnblogs_c1 class="c_ad_block sf-hidden">
+ 
+ </div>
+ <div id=under_post_news></div>
+ <div id=cnblogs_c2 class="c_ad_block sf-hidden"></div>
+ <div id=under_post_kb>
+<div class="itnews c_ad_block sf-hidden">
+ :
+ 
+ · 
+ 
+ · 
+ 
+ · 
+ 
+ · 
+ 
+ · 
+ 
+ » 
+</div></div>
+ <div id=HistoryToday class="c_ad_block sf-hidden"></div>
+ 
+</div>
+</div>
+ </div>
+ 
+ <div id=sidebar>
+ <div id=about>
+ <div>
+ <h2 id=about_title>About</h2>
+ <div id=about_body>
+ <div id=sidebar_news>
+<div id=blog-news>
+ 
+ <div id=profile_block>
+ 昵称：
+ <a href=https://home.cnblogs.com/u/skynet/>
+ 吴秦
+ </a>
+ <br>
+ 园龄：
+ <a href=https://home.cnblogs.com/u/skynet/ title=入园时间：2009-10-07>
+ 11年1个月
+ </a>
+ <br>
+荣誉： <a href=https://www.cnblogs.com/expert/>推荐博客</a>
+ <br>
+ 粉丝：
+ <a href=https://home.cnblogs.com/u/skynet/followers/>
+ 3928
+ </a>
+ <br>
+ 关注：
+ <a href=https://home.cnblogs.com/u/skynet/followees/>
+ 18
+ </a>
+ <div id=p_b_follow>
+<a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>+加关注</a></div>
+ 
+ </div>
+</div>
+</div>
+ 
+ </div>
+ </div>
+ </div>
+ 
+ <div id=mySearchWrapper>
+ <div id=mySearch>
+ <input type=image src=data:image/gif;base64,R0lGODlhRgAVANUAAGZmZicnJ0xMTFJSUh8fHyMjI2FhYWtrayQkJCIiIkRERHJyclBQUGhoaGBgYHp6en19fVpaWnZ2dk5OTklJSXNzc4ODg1tbW11dXUdHR4iIiHd3d1VVVUpKSm1tbUZGRlxcXGpqamVlZXBwcIyMjJKSkk9PT4uLi1RUVFlZWX9/f5CQkF9fX3t7e15eXlFRUWNjY3R0dEtLS35+fnV1dXx8fIGBgXl5eXh4eGRkZGdnZ29vb2lpaXFxcWxsbP///yH5BAAAAAAALAAAAABGABUAAAb/QMWEFRHIjsikcslsOp9LjsGk+FxQC5t2y+16v+Cw+Lu5GDoCA0x1yLnf8Lh8Tq/b5w4MQwDT4XSAgYKDhIWGh4iGBiADAjk8DzySk5SVlpeYmZqYORiNOT4QPqOkpaanqKmqq6kALo0iOzY7tLW2t7i5uru8ujwOjQA9Fj3FxsfIycrLzM3LBwaNOiM4MNbX2NkwP9w/293W4N/c1+Dk5NrpADow0gASAPHy8/TcBPcE9vf23AD8P/5+4PtHgJ5BeQ6iCQAAaVOlbpK6/eDBLUHFiz8sZowoMYFDSTkU6gjF6lQBbj64FVgp8cfJbixdjlKpsuQoAAobyOplSyICtAQSd3AD+oMoUVrdhBYdypMWj3YCeAxzhiyA1QDFrmK12oOrV6xdv4alWqxNoxASNNBYy7at27dw48qdG3cHgEYHcJzAwbev37+AAwseTFhwDx14b5C4wbix48eQI0ueTFlyhQaNfLRYUaOz58+gQ4seTbr06BgHXlDQsaDEjNewY8ueTbu27du1e3iYoIDBgQU9YggfTry48ePIkysvXsEHjwgZFFBgAMCm9evYSzVIIUBBEAA7 id=btnZzk class=submit value>
+ <label class=lb_search><input type=text id=q class=keyword value></label>
+ </div>
+ </div>
+ 
+ <div id=sideMain>
+ <div id=side-recent-posts>
+ 
+<h2>最新随笔</h2>
+<ul class=bullet>
+ <li><a href=https://www.cnblogs.com/skynet/p/5406495.html>Unity3D手游开发实践</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/4743458.html>Unity3D shader简介</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/4229556.html>PyQt5应用与实践</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/4173450.html>Nginx + CGI/FastCGI + C/Cpp</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/4146083.html>Nginx安装与使用</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/4135477.html>优雅的使用Python之软件管理</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/4124763.html>优雅的使用python之环境管理</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/3570421.html>SpriteSheet精灵动画引擎</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/3547380.html>【译】AS3利用CPU缓存</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/p/3543661.html>走在网页游戏开发的路上（十一）</a></li>
+</ul>
+</div><div id=side-recent-comments>
+ 
+<h2>最新评论</h2>
+<ul class=voice>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/archive/2011/02/20/1959162.html>Re:C/C++内存泄漏及检测</a>
+ <br>
+ <a class=child href=https://www.cnblogs.com/skynet/archive/2011/02/20/1959162.html>
+ <p>时隔九年，在一个小项目中遇到内存泄漏的问题，找到了博主这篇博文，受益颇多，万分感谢。</p>
+ -- 溪客
+ </a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/p/4146083.html>Re:Nginx安装与使用</a>
+ <br>
+ <a class=child href=https://www.cnblogs.com/skynet/p/4146083.html>
+ <p>1.3节中第2点应该是zlib-xx.tar.gz吧</p>
+ -- 笨蛋小四
+ </a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/07/10/1774964.html>Re:C++项目中的extern "C" {}</a>
+ <br>
+ <a class=child href=https://www.cnblogs.com/skynet/archive/2010/07/10/1774964.html>
+ <p>赞</p>
+ -- 郝姬友
+ </a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>Re:Linux Socket编程（不限Linux）</a>
+ <br>
+ <a class=child href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>
+ @myg 请问accept()函数应该是一直处于阻塞状态吗？只有连接建立完毕之后才会返回通信套接字嘛？...
+ -- XiaoNingMeng
+ </a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>Re:Linux Socket编程（不限Linux）</a>
+ <br>
+ <a class=child href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>
+ @没出没 也许可以选择备用服务器，像百度、阿里这样的大公司，都是有备用服务器，要么主服务器死掉，很多用户都会崩的。...
+ -- XiaoNingMeng
+ </a>
+ </li>
+</ul>
+</div></div>
+ <div id=sideRight>
+ <div id=side-archives>
+ <h2>随笔档案</h2>
+ <ul class=date>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2016/04.html>2016年4月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2015/08.html>2015年8月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2015/01.html>2015年1月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2014/12.html>2014年12月(3)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2014/11.html>2014年11月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2014/02.html>2014年2月(3)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2013/11.html>2013年11月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2013/10.html>2013年10月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2013/09.html>2013年9月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2013/05.html>2013年5月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2013/03.html>2013年3月(2)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2013/02.html>2013年2月(2)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2013/01.html>2013年1月(2)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2012/12.html>2012年12月(4)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2012/11.html>2012年11月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2012/08.html>2012年8月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2012/04.html>2012年4月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2012/03.html>2012年3月(2)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2012/01.html>2012年1月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2011/07.html>2011年7月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2011/06.html>2011年6月(5)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2011/05.html>2011年5月(3)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2011/03.html>2011年3月(2)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2011/02.html>2011年2月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2011/01.html>2011年1月(2)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2010/12.html>2010年12月(6)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2010/10.html>2010年10月(1)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2010/09.html>2010年9月(4)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2010/07.html>2010年7月(12)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2010/06.html>2010年6月(4)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2010/05.html>2010年5月(14)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2010/04.html>2010年4月(12)</a></li>
+ <li><a href=https://www.cnblogs.com/skynet/archive/2010/03.html>2010年3月(10)</a></li>
+ </ul>
+ </div><div id=side-score-ranks>
+ 
+<h2>积分与排名</h2>
+<ul style=word-break:break-all>
+ <li>积分 - 
+495672</li>
+ <li>排名 - 
+686</li>
+</ul>
+</div></div>
+ <div id=sideLeft>
+ <div id=side-calendar>
+ <h2>日历</h2>
+ <div id=blog-calendar>
+<table id=blogCalendar class=Cal title=Calendar cellspacing=0 cellpadding=0 border=0>
+ <tbody>
+ <tr>
+ <td colspan=7>
+ <table class=CalTitle cellspacing=0 border=0>
+ <tbody>
+ <tr>
+ <td class=CalNextPrev>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>&lt;</a>
+ </td>
+ <td align=center>2010年12月</td>
+ <td class=CalNextPrev align=right>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html>&gt;</a>
+ </td>
+ </tr>
+ </tbody>
+ </table>
+ </td>
+ </tr>
+ <tr>
+ <th class=CalDayHeader abbr=日 scope=col align=center>日</th>
+ <th class=CalDayHeader abbr=一 scope=col align=center>一</th>
+ <th class=CalDayHeader abbr=二 scope=col align=center>二</th>
+ <th class=CalDayHeader abbr=三 scope=col align=center>三</th>
+ <th class=CalDayHeader abbr=四 scope=col align=center>四</th>
+ <th class=CalDayHeader abbr=五 scope=col align=center>五</th>
+ <th class=CalDayHeader abbr=六 scope=col align=center>六</th>
+ </tr>
+ <tr>
+ <td class=CalOtherMonthDay align=center>28</td>
+ <td class=CalOtherMonthDay align=center>29</td>
+ <td class=CalOtherMonthDay align=center>30</td>
+ <td align=center>
+ 1
+ </td>
+ <td align=center>
+ 2
+ </td>
+ <td align=center>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/03.html><u>3</u></a>
+ </td>
+ <td class=CalWeekendDay align=center>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/04.html><u>4</u></a>
+ </td>
+ </tr>
+ <tr>
+ <td class=CalWeekendDay align=center>
+ 5
+ </td>
+ <td align=center>
+ 6
+ </td>
+ <td align=center>
+ 7
+ </td>
+ <td align=center>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/08.html><u>8</u></a>
+ </td>
+ <td align=center>
+ 9
+ </td>
+ <td align=center>
+ 10
+ </td>
+ <td class=CalWeekendDay align=center>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/11.html><u>11</u></a>
+ </td>
+ </tr>
+ <tr>
+ <td class=CalWeekendDay align=center>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/12.html><u>12</u></a>
+ </td>
+ <td align=center>
+ 13
+ </td>
+ <td align=center>
+ 14
+ </td>
+ <td align=center>
+ 15
+ </td>
+ <td align=center>
+ 16
+ </td>
+ <td align=center>
+ 17
+ </td>
+ <td class=CalWeekendDay align=center>
+ 18
+ </td>
+ </tr>
+ <tr>
+ <td class=CalWeekendDay align=center>
+ 19
+ </td>
+ <td align=center>
+ 20
+ </td>
+ <td align=center>
+ 21
+ </td>
+ <td align=center>
+ 22
+ </td>
+ <td align=center>
+ 23
+ </td>
+ <td align=center>
+ 24
+ </td>
+ <td class=CalWeekendDay align=center>
+ <a href=https://www.cnblogs.com/skynet/archive/2010/12/25.html><u>25</u></a>
+ </td>
+ </tr>
+ <tr>
+ <td class=CalWeekendDay align=center>
+ 26
+ </td>
+ <td align=center>
+ 27
+ </td>
+ <td align=center>
+ 28
+ </td>
+ <td align=center>
+ 29
+ </td>
+ <td align=center>
+ 30
+ </td>
+ <td align=center>
+ 31
+ </td>
+ <td class=CalOtherMonthDay align=center>
+ 1
+ </td>
+ </tr>
+ <tr>
+ <td class=CalOtherMonthDay align=center>
+ 2
+ </td>
+ <td class=CalOtherMonthDay align=center>
+ 3
+ </td>
+ <td class=CalOtherMonthDay align=center>
+ 4
+ </td>
+ <td class=CalOtherMonthDay align=center>
+ 5
+ </td>
+ <td class=CalOtherMonthDay align=center>
+ 6
+ </td>
+ <td class=CalOtherMonthDay align=center>
+ 7
+ </td>
+ <td class=CalOtherMonthDay align=center>
+ 8
+ </td>
+ </tr>
+ </tbody>
+</table></div>
+ 
+</div><div id=side-hottags>
+ 
+</div><div id=side-categories>
+ <h2>随笔分类</h2>
+ <ul class=folder>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/238071.html>.NET 2.0配置解谜系列(9)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/240142.html>.NET(C#) Internals (10)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/273085.html>【日常小记】(3)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/252978.html>【转载】(2)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/241385.html>Android开发之旅(18)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/552327.html>as3(1)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/248264.html>C/C++ Internals(15)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/533897.html>cocos2d-x(1)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/404925.html>JavaScript(1)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/637901.html>nginx(2)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/441705.html>PureMVC（AS3）剖析(5)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/290735.html>Python(5)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/725439.html>Unity3D(2)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/248267.html>Unix/Linux下编程(8)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/434928.html>服务器开发(3)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/452687.html>基于AIR Android应用开发(1)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/452612.html>客户端开发(1)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/239648.html>数据库(4)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/302183.html>网页游戏开发(23)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/237841.html>源码剖析：DotText源码学习(2)</a>
+ </li>
+ <li>
+ <a href=https://www.cnblogs.com/skynet/category/254728.html>源码剖析：Mongoose(5)</a>
+ </li>
+ </ul>
+ </div>
+ 
+ 
+ 
+<div id=side-link-240090>
+ <h2>系列索引帖</h2>
+ <ul class=chain>
+ <li>
+ <a href=http://www.cnblogs.com/skynet/archive/2010/04/02/1703380.html target=_self>.NET 2.0配置解谜系列索引（完结）</a>
+ </li>
+ </ul>
+ </div></div> 
+ <div id=sideContainer class=sf-hidden></div>
+ 
+ </div>
+ 
+ <div id=footer class=sf-hidden>
+ 
+ </div>
+ </div>
+ 
+</div>
+ <div id=page_end_html>
+ 
+ </div>

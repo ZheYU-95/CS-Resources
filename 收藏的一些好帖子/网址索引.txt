@@ -1,0 +1,44 @@
+2020 笔试题精选： https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzI5MDA4ODczOA==&action=getalbum&album_id=1466850599034830851&scene=173#wechat_redirect
+
+Linux Socket编程：https://www.cnblogs.com/skynet/archive/2010/12/12/1903949.html
+
+百度2017春招笔试真题编程题集合-有趣的排序：https://blog.csdn.net/qq_34617032/article/details/78578921
+
+HTTP概念讲解：https://mp.weixin.qq.com/s/XZZR0945IcI6X4S0g5fZXg
+
+BitMap算法原理及实现实现：https://blog.csdn.net/Gimaomao/article/details/77838100
+
+SQL: https://zhuanlan.zhihu.com/p/38354000
+
+SQL: https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzAxMTMwNTMxMQ==&action=getalbum&album_id=1398781984763428865&scene=173#wechat_redirect
+
+labuladong算法精讲：https://labuladong.gitbook.io/algo/
+
+C++基础：https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzUxODAzNDg4NQ==&action=getalbum&album_id=1383149653700558849&scene=173#wechat_redirect
+
+计算机网络知识点汇总：https://blog.csdn.net/qq_42322103/article/details/89766254#%E7%BD%91%E7%BB%9C%E5%B1%82%E6%8F%90%E4%BE%9B%E7%9A%84%E4%B8%A4%E7%A7%8D%E6%9C%8D%E5%8A%A1%C2%A0
+
+计算机操作系统知识点汇总：https://blog.csdn.net/NuanShuTT/article/details/107908519
+
+图解操作系统（小林coding）：https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzUxODAzNDg4NQ==&action=getalbum&album_id=1408057986861416450&scene=173#wechat_redirect
+
+图解网络（小林coding）：https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzUxODAzNDg4NQ==&action=getalbum&album_id=1337204681134751744&scene=173#wechat_redirect
+
+2020.8.24阿里笔试第2题：https://blog.csdn.net/qq_39898877/article/details/108208210
+
+C++异常机制分析：https://www.cnblogs.com/QG-whz/p/5136883.html
+
+图的表示法与常用的转化算法：https://www.cnblogs.com/liushang0419/archive/2011/05/06/2039386.html
+
+计算机专业课408思维导图和笔记：https://github.com/SSHeRun/CS-Xmind-Note
+
+数据结构与算法快速入门题目精选精讲：https://greyireland.gitbook.io/algorithm-pattern/
+
+138 张图搞定 MySQL 面试：https://mp.weixin.qq.com/s?__biz=MzAxODQxMDM0Mw==&mid=2247485719&idx=2&sn=f766906bf8639b51ae091098f3e2ed05&chksm=9bd7f71faca07e099fcca28237e37c7d5ea8ba7eab68565428c706449839f106cba163075139&scene=126&sessionid=1594580685&key=adb8759a029aa30d42d5bd85d25609fc214f2ba4cacbfbb674b623841d05d8c48d984ff76904ed0ffc1ba05a158036743a03ec5938e64bff175aacc87cc6ae2ba22066295221817528a58750042fdc1b&ascene=1&uin=MTY3NDQ2MTMwNw%3D%3D&devicetype=Windows+10&version=62080079&lang=zh_CN&exportkey=A%2FZf3xknefrqhnHeht9NsaY%3D&pass_ticket=fHIU54%2BMJXSK%2BffXguhg4I6M2xxmnV2l62TWdA%2BL7zxvu9pJRVnpO%2BowIsnFyZ2s
+
+互联网面试全知识点一览：https://github.com/jwasham/coding-interview-university/blob/master/translations/README-cn.md
+
+MySQL入门：https://github.com/jaywcjlove/mysql-tutorial/blob/master/21-minutes-MySQL-basic-entry.md
+
+十大经典排序算法：https://www.cnblogs.com/onepixel/p/7674659.html
+
